@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/home_shape_bk"
+    style="@style/loginParent">
+    <RelativeLayout
+        android:gravity="center"
+        style="@style/Style_toolbar_relativeLayout">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/Style_Toolbar">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                >
+                <TextView
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|right"
+                    android:id="@+id/toolbartext"
+                    android:textColor="@color/White"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_marginRight="10dp">
+                <TextView
+                    android:layout_marginRight="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|right"
+                    android:id="@+id/toolbartextjoin"
+                    android:textStyle="bold"
+                    android:text="Edit"
+                    android:textColor="@color/White"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    />
+            </LinearLayout>
+</LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </RelativeLayout>
+
+        <LinearLayout style="@style/Style_event_detail_LinearLayout">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+
+                            >
+<!--                            <com.zolad.zoominimageview.ZoomInImageView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="200dp"-->
+<!--                                android:layout_marginTop="5dp"-->
+<!--                                android:src="@drawable/ic_launcher_foreground"/>-->
+                                <ImageView
+                                    android:id="@+id/imgProjHome"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="200dp"
+                                    android:adjustViewBounds="true"
+                                    android:src="@drawable/ic_launcher_foreground"/>
+
+                        </RelativeLayout>
+                        <View style="@style/style_view" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginLeft="@dimen/dimen_5"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dimen_10">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Firm Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+        <TextView
+            android:id="@+id/textFirmName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Darshan Kasundra"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dimen_10">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Firm Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Darshan Kasundra"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dimen_10">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Firm Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Darshan Kasundra"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dimen_10">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Firm Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Darshan Kasundra"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dimen_10">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Firm Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Darshan Kasundra"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dimen_10">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Firm Name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Darshan Kasundra"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+    </LinearLayout>
+
+</LinearLayout>
+
+<!--                        <LinearLayout-->
+<!--                            android:gravity="center"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            >-->
+<!--                                <Button-->
+<!--                                    android:id="@+id/btnJoin"-->
+<!--                                    style="@style/loginButton"-->
+<!--                                    android:text="Join"-->
+<!--                                    android:textColor="#000000"-->
+<!--                                    android:layout_marginTop="5dp"-->
+<!--                                    android:layout_marginBottom="5dp"-->
+<!--                                    android:layout_marginRight="10dp"/>-->
+<!--                        </LinearLayout>-->
+
+
+                </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="participate"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/White" />
+            </LinearLayout>
+
+
+
+
+
+
+
+        </LinearLayout>
+</LinearLayout>
