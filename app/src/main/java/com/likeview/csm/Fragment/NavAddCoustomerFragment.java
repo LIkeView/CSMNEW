@@ -1,34 +1,52 @@
 package com.likeview.csm.Fragment;
 
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.ApiResponseWithoutResData;
+import com.likeview.csm.MainActivity;
 import com.likeview.csm.R;
 import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
+
+import java.io.IOException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.app.Activity.RESULT_OK;
 
 //import com.aswdc.autocadetutorial.adapter.VideoAdapter;
 
@@ -44,6 +62,11 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     TabLayout tabLayout;
     Toolbar toolbar;
     Context context;
+    Bitmap bitmap;
+    Uri uri;
+    ImageView chooseLogo;
+    private static final int PICK_IMAGE = 1;
+    Spinner spStateAddUser;
 //    SharedPrefManager sfm = SharedPrefManager.getInstance(getActivity());
 //    ProfileDetail pd = sfm.getUser();
 
@@ -68,6 +91,30 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         btnSubmit.setOnClickListener( this );
 
         Log.d( "Dk::3", "Hello" );
+        chooseLogo = view.findViewById( R.id.chooseLogo );
+        chooseLogo.setOnClickListener( this );
+
+        spStateAddUser = view.findViewById(R.id.spStateAddUser);
+
+        String[] items = new String[]{
+                "Select an item","Choose apple", "Choose boy", " Choose cat", "Choose dog",
+        };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spStateAddUser.setAdapter(adapter);
+        spStateAddUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("item", (String) parent.getItemAtPosition(position));
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 
     private void userLogin() {
@@ -133,10 +180,45 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult( requestCode, resultCode, data );
+        switch (requestCode) {
+            case PICK_IMAGE:
+                if (resultCode == RESULT_OK) {
+                    uri = data.getData();
+                    try {
+//                        bitmap = MediaStore.Images.Media.getBitmap( getContentResolver(), uri );
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
+                        chooseLogo.setImageBitmap( bitmap );
+                        Log.d("bitmap",""+bitmap);
+//                        String imagepath = data.getData().getPath();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+
+    }
+
+
+    private void selectImage() {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions( getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_IMAGE );
+        } else {
+            Intent galleryIntent = new Intent( Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI );
+            startActivityForResult( galleryIntent, PICK_IMAGE );
+        }
+    }
+
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnSubmit:
                 userLogin();
+                break;
+            case R.id.chooseLogo:
+                selectImage();
                 break;
 
         }
