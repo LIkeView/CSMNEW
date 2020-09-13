@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.likeview.csm.Activity.ClientDetailActivity;
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.ApiResponseWithoutResData;
@@ -100,8 +101,17 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
                 Intent intent = new Intent( context, ClientDetailActivity.class );
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra( clientDetailsModel.getClientId(), listEvents.get(position).getClientId());
-//                intent.putExtra( userDetail.getUserId(), listEvents.get(position).getEventId());
-//                intent.putExtra( String.valueOf( pd.getUserId() ), listEvents.get(position).getEventId());
+                intent.putExtra( "firm_name", listEvents.get(position).getFirmName());
+                intent.putExtra( "personal_name", listEvents.get(position).getPersionname());
+                intent.putExtra( "address", listEvents.get(position).getAddress());
+                intent.putExtra( "wp_no", listEvents.get(position).getWp_no());
+                intent.putExtra( "mobile_no", listEvents.get(position).getMobile_no());
+                intent.putExtra( "email", listEvents.get(position).getEmail());
+                intent.putExtra( "website", listEvents.get(position).getWebsite());
+                intent.putExtra( "req_size", listEvents.get(position).getReq_size());
+                intent.putExtra( "qty", listEvents.get(position).getQty());
+                intent.putExtra( "payment_type", listEvents.get(position).getPayment_type());
+                //                intent.putExtra( String.valueOf( pd.getUserId() ), listEvents.get(position).getEventId());
                 context.startActivity(intent);
             }
         } );
@@ -164,9 +174,11 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
     class UsersViewHolder extends RecyclerView.ViewHolder {
 
         TextView textViewProjectName ,First_letter ,textMobile,textwp;
+        ShimmerFrameLayout shimmerFrameLayout;
         ImageView savebutton;
         public UsersViewHolder(View itemView) {
             super(itemView);
+//            shimmerFrameLayout = itemView.findViewById(R.id.shimmerFrameLayout);
             textViewProjectName = itemView.findViewById(R.id.textViewProjectName);
             textMobile = itemView.findViewById(R.id.textMobile);
             textwp = itemView.findViewById(R.id.textwp);
