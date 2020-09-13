@@ -11,7 +11,7 @@
 
     <!--colros for card-->
     <color name="whiteCardColor">#fff</color>
->
+   <color name="blueCardColor">#0000FF</color>
 
     <color name="dark">#FF222222</color>
     <color name="light">#FFEEEEEE</color>
