@@ -1,8 +1,12 @@
 package com.likeview.csm.Activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,11 +46,12 @@ import retrofit2.Response;
 public class ClientDetailActivity extends AppCompatActivity {
 
 //    globley declare
+private static final int REQUEST_PHONE_CALL = 1;
 
     RecyclerView rcvEventDetail , rcvUserEventDetail ;
     Context context;
 //    Button btnJoin;
-    TextView textFirmName,textFees,textStatus,textStartDate,textEndDate,textUserName ,textVoteCount,toolbartextjoin;
+    TextView textFirmName,textPersionName,textaddress,textwp,textMobile,textEmail ,textWebsite,textSize,textQty,textPaymentType;
     LinearLayout linearlayoutvotebutton,linearlayoutDescrotion;
     ImageView imgProjHome ,backButton ;
 
@@ -59,43 +65,16 @@ public class ClientDetailActivity extends AppCompatActivity {
 
 //      find all field using findViewById
 
-//        rcvUserEventDetail = (RecyclerView) findViewById( R.id.rcvUserEventDetail );
-//        textEventName = findViewById( R.id.textEventName );
         textFirmName = findViewById( R.id.textFirmName);
-//        textEndDate = findViewById( R.id.textEndDate);
-//        linearlayoutDescrotion = findViewById( R.id.linearlayoutDescrotion);
-//        textUserName = findViewById( R.id.textUserName);
-//        imgProjHome = findViewById( R.id.imgProjHome );
-//        textFees = findViewById( R.id.textFees);
-//        textStatus = findViewById( R.id.textStatus);
-//        toolbartextjoin = findViewById( R.id.toolbartextjoin );
-//        btnJoin = findViewById( R.id.btnJoin );
-//        linearlayoutvotebutton = findViewById( R.id.linearlayoutvotebutton );
-//        textVoteCount = findViewById( R.id.textVoteCount );
-
-//        backButton = findViewById( R.id.backButton );
-
-
-//        linearlayoutDescrotion.setOnClickListener( new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent( EventDetailActivity.this , EventDiscriptionActivity.class );
-//                startActivity( intent );
-//            }
-//        } );
-
-
-//        setSupportActionBar( toolbar );
-//        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-//        getSupportActionBar().setDisplayShowHomeEnabled( true );
-
-
-
-//        set Layout
-//        rcvUserEventDetail.setLayoutManager(
-//                new GridLayoutManager(getApplicationContext(),
-//                        1));
-//          call method
+        textPersionName = findViewById( R.id.textPersionName);
+        textaddress = findViewById( R.id.textaddress);
+        textwp = findViewById( R.id.textwp);
+        textMobile = findViewById( R.id.textMobile);
+        textEmail = findViewById( R.id.textEmail);
+        textWebsite = findViewById( R.id.textWebsite);
+        textSize = findViewById( R.id.textSize);
+        textQty = findViewById( R.id.textQty);
+        textPaymentType = findViewById( R.id.textPaymentType);
         initReference();
     }
     void initReference( ){
@@ -108,184 +87,72 @@ public class ClientDetailActivity extends AppCompatActivity {
 //        progress.setCancelable(false);
 //        progress.show();
 
-
-
-//        toolbartextjoin.setOnClickListener( new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//
-////                intent.putExtra( pd.getUserId(), eventDetail.getEventId());
-////                   Intent intent = new Intent( EventDetailActivity.this, PopActivity.class );
-////
-//
-//                SharedPrefManager sfm = SharedPrefManager.getInstance(getApplication());
-//                ProfileDetail pd = sfm.getUser();
-////                SharedPrefManager sfm = SharedPrefManager.getInstance( context.getApplicationContext() );
-//
-//                if(sfm.isLoggedIn())
-//                {
-//                    int eventID=getIntent().getIntExtra( eventDetail.getEventId(),0);
-////                    toolbartextjoin.setText( "Voted" );
-//                    Intent intent = new Intent( EventDetailActivity.this,PopActivity.class );
-//                    intent.putExtra( eventDetail.getEventId(),  eventID);
-//                    intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity( intent );
-//
-//
-//                }else
-//                {
-//                    startActivity( new Intent( EventDetailActivity.this, LoginErrorPopActivity.class) );
-//                }
-//
-//
-//
-//
-//                int eventID=getIntent().getIntExtra( eventDetail.getEventId(),0);
-//
-//
-//
-//                Api api = RetrofitClient.getApi().create(Api.class);
-//                Call<ApiResponseWhitoutResData> call = api.getJoinUserInEvent( eventID,pd.getUserId());
-//
-//                call.enqueue( new Callback<ApiResponseWhitoutResData>() {
-//                    @Override
-//                    public void onResponse(Call<ApiResponseWhitoutResData> call, Response<ApiResponseWhitoutResData> response) {
-//                        if (response.body().getResCode() == 1){
-//                            Log.d( "Tom",""+response.body().getResMessage() );
-//                            Log.d( "eventId",""+eventID);
-//                            Toast.makeText(EventDetailActivity.this, response.body().getResMessage(), Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ApiResponseWhitoutResData> call, Throwable t) {
-//                        Log.d( "Dog",""+t.getLocalizedMessage() );
-//
-//                    }
-//                } );
-//
-//
-////                call.enqueue( new Callback<ApiResponse>() {
-////                    @Override
-////                    public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-////                        Log.d( "Pin",""+pd.getUserId() );
-////                        Log.d( "tag",""+eventID );
-////                        Toast.makeText(EventDetailActivity.this, response.body().getResMessage(), Toast.LENGTH_LONG).show();
-////
-////                    }
-////
-////                    @Override
-////                    public void onFailure(Call<ApiResponse> call, Throwable t) {
-////                        Log.d( "Dog",""+t.getLocalizedMessage() );
-////
-////                    }
-////                } );
-//            }
-//        } );
-
-
-
 //        SharedPrefManager sfm = SharedPrefManager.getInstance(context);
 //        ProfileDetail pd = sfm.getUser();
         ClientDetailsModel clientDetailsModel = new ClientDetailsModel();
         int clientID=getIntent().getIntExtra( clientDetailsModel.getClientId(),0);
-//        int UserId=getIntent().getIntExtra( String.valueOf( pd.getUserId() ),0);
-//
-        Api api = RetrofitClient.getApi().create( Api.class);
-        Call<ApiResponse> call = api.getdetailClient(clientID);
+        String FirmName = getIntent().getStringExtra( "firm_name");
+        String PersionName = getIntent().getStringExtra( "personal_name");
+        String Address1 = getIntent().getStringExtra( "address");
+        String Whatsapp = getIntent().getStringExtra( "wp_no");
+        String Mobile = getIntent().getStringExtra( "mobile_no");
+        String Email = getIntent().getStringExtra( "email");
+        String Website = getIntent().getStringExtra( "website");
+        String Size = getIntent().getStringExtra( "req_size");
+        String Qnty = getIntent().getStringExtra( "qty");
+        String PaymentType = getIntent().getStringExtra( "payment_type");
 
-        call.enqueue( new Callback<ApiResponse>() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+
+        Toolbar toolbar;
+        TextView toolbartext;
+        toolbar=  findViewById( R.id.toolbar);
+        toolbartext=  findViewById( R.id.toolbartext);
+        toolbartext.setText( FirmName );
+        setSupportActionBar( toolbar );
+        getSupportActionBar().setTitle( FirmName );
+        getSupportActionBar().setDisplayShowHomeEnabled( true );
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+
+        textFirmName.setText( FirmName );
+
+        textPersionName.setText( PersionName );
+        textaddress.setText( Address1 );
+        textwp.setOnClickListener ( new View.OnClickListener () {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-//                Log.d( "Done",""+response.body().getResData().getUserDetail( UserId ) );
-
-
-//                event arraylist
-                ArrayList<ClientDetailsModel> eventDetails = (ArrayList<ClientDetailsModel>) response.body().getResData().getClientdetails(clientID);
-
-                //  set Toolbar  //
-                Toolbar toolbar;
-                TextView toolbartext;
-                toolbar=  findViewById( R.id.toolbar);
-                toolbartext=  findViewById( R.id.toolbartext);
-                toolbartext.setText( eventDetails.get( 0 ).getFirmName() );
-
-                setSupportActionBar( toolbar );
-                getSupportActionBar().setTitle( eventDetails.get( 0 ).getFirmName() );
-                getSupportActionBar().setDisplayShowHomeEnabled( true );
-                getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-//                getSupportActionBar().setHomeAsUpIndicator( R.drawable.ic_home );
-
-
-//                textFees.setText( eventDetails.get(0).getFees() );
-//                textStatus.setText( eventDetails.get( 0 ).getStatus() );
-//                textStartDate.setText( eventDetails.get( 0 ).getStartDate() );
-//                textEndDate.setText( eventDetails.get( 0 ).getEndDate());
-//
-//                String date_s =  eventDetails.get( 0 ).getStartDate();
-//                String date_s1 =  eventDetails.get( 0 ).getEndDate();
-//
-//                SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//                Date date = null;
-//                Date date1 = null;
-//
-//                try {
-//                    date = dt.parse(date_s);
-//                    date1 = dt.parse(date_s1);
-//
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-//                SimpleDateFormat dt1 = new SimpleDateFormat("dd/MM/yyyy");
-//                String startdare = dt1.format(date);
-//                String enddate = dt1.format(date1);
-//                textStartDate.setText( startdare );
-//                textEndDate.setText( enddate );
-
-//                String date= eventDetails.get( 0 ).getStartDate();
-//                SimpleDateFormat spf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ");
-////                Date newDate=spf.parse(date);
-//                spf= new SimpleDateFormat("dd MM yyyy");
-//                date = spf.format(newDate);
-
-//                textStartDate.setText( date );
-
-//                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-//                LocalDateTime dateTime = LocalDateTime.of(1986, Month.APRIL, 8, 12, 30);
-//                String formattedDateTime = dateTime.format(formatter);
-
-//                LocalDateTime localDateTime = LocalDateTime.parse(eventDetails.get( 0 ).getStartDate());
-
-
-//                Date today = eventDetails.get( 0 ).getStartDate();//getting date
-//                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");//formating according to my need
-//                String date = formatter.format(localDateTime);
-//                textStartDate.setText( date );
-//                Calendar cal = Calendar.getInstance();
-//                SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy");
-//                textStartDate.setText( sdf.format(eventDetails.get( 0 ).getStartDate() ));
-
-
-//                textEventName.setText( eventDetails.get( 0 ).getEventName() );
-//                Picasso.with( context ).load( eventDetails.get(0).getMainBannerPath() ).fit().centerCrop().into( imgProjHome );
-//                user array list
-
-//                ArrayList<UserList> userLists = (ArrayList<UserList>) response.body().getResData().getUserList( UserId );
-//
-//                rcvUserEventDetail.setAdapter(new HomeEventUserDetailAdapter( EventDetailActivity.this, userLists ,eventID));
-
-
-//                progress.dismiss();
-            }
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-
+            public void onClick(View view) {
+                try {
+                    String headerReceiver = "";// Replace with your message.
+                    String bodyMessageFormal = "";// Replace with your message.
+                    String whatsappContain = headerReceiver + bodyMessageFormal;
+                    String trimToNumner = Whatsapp; //10 digit number
+                    Intent intent = new Intent ( Intent.ACTION_VIEW );
+                    intent.setData ( Uri.parse ( "https://wa.me/" + trimToNumner + "/?text=" + "Hello" ) );
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace ();
+                }
             }
         } );
 
-
+        textMobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission( context, Manifest.permission.CALL_PHONE ) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions( (Activity) context, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL );
+                } else {
+                    Intent i;
+                    i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + Mobile));
+                    context.startActivity(i);
+                }
+            }
+        });
+        textwp.setText( Whatsapp );
+        textMobile.setText( Mobile );
+        textEmail.setText( Email );
+        textWebsite.setText( Website );
+        textSize.setText( Size );
+        textQty.setText( Qnty );
+        textPaymentType.setText( PaymentType );
 
     }
 

@@ -150,6 +150,27 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                 },  newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+
+        datepick.setText(getCurrentDate());
+        Calendar newCalendar = Calendar.getInstance();
+
+        datepick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                        datepick.setText(dayOfMonth+"/"+(month+1)+"/"+year);
+                    }
+                },  newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+    }
+
+    String getCurrentDate() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy");
+        return sdf.format(cal.getTime());
     }
 
     String getCurrentDate() {
@@ -246,7 +267,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions( getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_IMAGE );
         } else {
-            Intent galleryIntent = new Intent( Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI );
+            Intent galleryIntent = new Intent( Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI );
             startActivityForResult( galleryIntent, PICK_IMAGE );
         }
     }

@@ -29,7 +29,7 @@
         tools:layout="@layout/fragment_add" />
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.likeview.csm.ui.add.AddFragment"
+        android:name="com.likeview.csm.Fragment.NavProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_add" />
 </navigation>
