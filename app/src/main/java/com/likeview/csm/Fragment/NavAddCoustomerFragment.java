@@ -2,6 +2,7 @@ package com.likeview.csm.Fragment;
 
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.renderscript.ScriptGroup;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,6 +37,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.ApiResponseWithoutResData;
 import com.likeview.csm.MainActivity;
@@ -40,6 +47,8 @@ import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -67,6 +76,10 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     ImageView chooseLogo;
     private static final int PICK_IMAGE = 1;
     Spinner spStateAddUser;
+    TextInputEditText datepick;
+    TextInputLayout datelayout;
+    private SimpleDateFormat dateFormatter;
+    private DatePickerDialog DatePickerDialog;
 //    SharedPrefManager sfm = SharedPrefManager.getInstance(getActivity());
 //    ProfileDetail pd = sfm.getUser();
 
@@ -89,7 +102,11 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         toolbartext.setText( "Add Coustomer" );
         btnSubmit = view.findViewById( R.id.btnSubmit );
         btnSubmit.setOnClickListener( this );
-
+//        datepick = view.findViewById(R.id.datepickeredit);
+//        datepick.setInputType(InputType.TYPE_NULL);
+        datepick = view.findViewById(R.id.datepicker);
+        datepick.setInputType(InputType.TYPE_NULL);
+        datelayout = view.findViewById(R.id.datlayout);
         Log.d( "Dk::3", "Hello" );
         chooseLogo = view.findViewById( R.id.chooseLogo );
         chooseLogo.setOnClickListener( this );
@@ -97,7 +114,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         spStateAddUser = view.findViewById(R.id.spStateAddUser);
 
         String[] items = new String[]{
-                "Select an item","Choose apple", "Choose boy", " Choose cat", "Choose dog",
+                "Select an item","HIGH PRICE", "HAVE DEALERS", "DESIGN ISSUE", "QUALITY ISSUE","AVALIBLITY","PENDING"
         };
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, items);
@@ -106,15 +123,39 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         spStateAddUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.v("item", (String) parent.getItemAtPosition(position));
+//                Hold = spStateAddUser.getSelectedItemPosition();
+                Log.v("item", String.valueOf(spStateAddUser.getSelectedItemPosition()));
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // TODO Auto-generated method stub
+                
             }
         });
+
+        datepick.setText(getCurrentDate());
+        Calendar newCalendar = Calendar.getInstance();
+
+        datepick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                        datepick.setText(dayOfMonth+"/"+(month+1)+"/"+year);
+                    }
+                },  newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+    }
+
+    String getCurrentDate() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy");
+        return sdf.format(cal.getTime());
     }
 
     private void userLogin() {
@@ -166,7 +207,6 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
 //                    startActivity( intent );
                 } else {
                     Toast.makeText( getActivity(), apiResponseWithoutResData.getResMessage(), Toast.LENGTH_LONG ).show();
-
                 }
             }
 
@@ -220,7 +260,6 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
             case R.id.chooseLogo:
                 selectImage();
                 break;
-
         }
     }
 }

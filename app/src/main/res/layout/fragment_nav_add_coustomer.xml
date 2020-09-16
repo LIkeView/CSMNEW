@@ -620,29 +620,35 @@
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
                 android:background="@drawable/ic_baseline_people_alt_24"/>
+<!--            <EditText-->
+<!--                android:id="@+id/datepickeredit"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                />-->
+
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/datlayout"
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dimen_5"
                 android:padding="2dp"
                 android:background="@drawable/edittext_background"
-                android:hint="Communication">
+                android:hint="Date">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/datepicker"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
                     />
-
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
             <Button
                 android:id="@+id/btnSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:text="Submit"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
