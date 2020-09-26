@@ -104,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_baseline_person_24"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textPersionName"
@@ -134,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_home_black_24dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -145,6 +145,7 @@
                 android:hint="Address Line 1">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextAddressLine1"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -163,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_home_black_24dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:gravity="center_vertical"
@@ -175,6 +176,7 @@
                 android:hint="Address Line 2">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextAddressLine2"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -192,12 +194,6 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/ic_baseline_people_alt_24"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
@@ -208,6 +204,7 @@
                     android:hint="City">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextCity"
                         android:layout_margin="@dimen/dimen_5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -221,11 +218,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/ic_baseline_people_alt_24"/>
+<!--                    <ImageView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_margin="8dp"-->
+<!--                        android:background="@drawable/ic_baseline_people_alt_24"/>-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
@@ -236,6 +233,7 @@
                     android:hint="State">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextState"
                         android:layout_margin="@dimen/dimen_5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -249,11 +247,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/ic_baseline_people_alt_24"/>
+<!--                    <ImageView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_margin="8dp"-->
+<!--                        android:background="@drawable/ic_baseline_people_alt_24"/>-->
                 <com.google.android.material.textfield.TextInputLayout
                     android:gravity="center_vertical"
                     android:layout_width="match_parent"
@@ -264,6 +262,7 @@
                     android:hint="Country">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextCountry"
                         android:layout_margin="@dimen/dimen_5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -281,7 +280,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_baseline_email_24"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
@@ -292,6 +291,7 @@
                 android:hint="Email">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextEmail"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -308,7 +308,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_baseline_call_24"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
@@ -319,6 +319,7 @@
                 android:hint="Mobile">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextMobile"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -335,7 +336,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_baseline_call_24"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
@@ -346,6 +347,7 @@
                 android:hint="Whatsapp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextWhatsap"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -362,7 +364,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_baseline_web_asset_24"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
@@ -373,6 +375,7 @@
                 android:hint="WebSite">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextWebsite"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -405,7 +408,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_baseline_photo_size_select_small_24"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
@@ -416,6 +419,7 @@
                 android:hint="Tiles Size">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextTilesSize"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -433,7 +437,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_baseline_equalizer_24"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
@@ -444,6 +448,7 @@
                 android:hint="Quantity">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextQuantity"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -461,7 +466,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_baseline_payment_24"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:gravity="center_vertical"
@@ -473,6 +478,7 @@
                 android:hint="Payment Type">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextPaymentType"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -501,6 +507,7 @@
                 android:hint="Dealing With">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextDealingWith"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -529,6 +536,7 @@
                 android:hint="Dealing Firm">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextDealingFirm"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -557,6 +565,7 @@
                 android:hint="Dealing Since">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextDealingSince"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -574,7 +583,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_baseline_contactless_24"/>
             <com.google.android.material.textfield.TextInputLayout
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
@@ -585,6 +594,7 @@
                 android:hint="Communication">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextCommunication"
                     android:layout_margin="@dimen/dimen_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -618,7 +628,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="@drawable/ic_baseline_people_alt_24"/>
+                android:background="@drawable/ic_baseline_date_range_24"/>
 <!--            <EditText-->
 <!--                android:id="@+id/datepickeredit"-->
 <!--                android:layout_width="match_parent"-->

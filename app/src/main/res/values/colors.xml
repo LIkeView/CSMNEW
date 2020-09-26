@@ -155,5 +155,7 @@
 <color name="DarkBlue">#00008B</color>
 <color name="Navy">#000080</color>
 <color name="Black">#000000</color>
+    <color name="startblue">#09c6df</color>
+    <color name="endblue">#0bcce6</color>
 </resources>
 

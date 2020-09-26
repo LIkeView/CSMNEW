@@ -1,6 +1,7 @@
 package com.likeview.csm.Fragment;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +53,10 @@ public class AllHomeTabFragment extends Fragment {
     LinearLayoutManager manager;
     Boolean isScrolling = false;
     int currentItems, totalItems, scrollOutItems;
+    SearchView searchView;
+    ArrayList<ListClientModel> subfilesWithUserDetailHistories;
+    SearchManager searchManager;
+    HomeAllTabAdapter homeAllTabAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +73,9 @@ public class AllHomeTabFragment extends Fragment {
         toolbar = view.findViewById( R.id.toolbar );
         rcvallSubFileList = view.findViewById( R.id.rcvallSubFileList );
         navUserName  = view.findViewById( R.id.navUserName );
+        searchView = view.findViewById(R.id.searchView);
+        searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
 
         manager = new LinearLayoutManager( getActivity() );
         rcvallSubFileList.setLayoutManager( manager );
@@ -126,6 +135,7 @@ public class AllHomeTabFragment extends Fragment {
 
 
     }
+
     void getData(){
         ProgressDialog progress = new ProgressDialog( getActivity() );
         progress.setTitle("Loading");
@@ -140,8 +150,9 @@ public class AllHomeTabFragment extends Fragment {
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.body().getResCode() == 1) {
                     progress.dismiss();
-                    ArrayList<ListClientModel> subfilesWithUserDetailHistories = (ArrayList<ListClientModel>) response.body().getResData().getListClient();
-                    rcvallSubFileList.setAdapter(new HomeAllTabAdapter(getActivity(), subfilesWithUserDetailHistories));
+                    subfilesWithUserDetailHistories = (ArrayList<ListClientModel>) response.body().getResData().getListClient();
+                    homeAllTabAdapter = new HomeAllTabAdapter(getActivity(), subfilesWithUserDetailHistories);
+                    rcvallSubFileList.setAdapter(homeAllTabAdapter);
                 }
                 else
                 {
@@ -159,6 +170,28 @@ public class AllHomeTabFragment extends Fragment {
 
             }
         } );
+
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                if(subfilesWithUserDetailHistories.contains(s)){
+                    homeAllTabAdapter.getFilter().filter(s);
+                }else{
+                    Toast.makeText(getContext(), "No Match found",Toast.LENGTH_LONG).show();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                homeAllTabAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
 
     }
 }

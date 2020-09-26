@@ -9,7 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.likeview.csm.Activity.ClientDetailActivity;
-import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.ApiResponseWithoutResData;
 import com.likeview.csm.ApiResponse.Model.ClientDetailsModel;
 import com.likeview.csm.ApiResponse.Model.ListClientModel;
@@ -29,6 +29,7 @@ import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,15 +41,19 @@ import retrofit2.Response;
 //import net.simplifiedcoding.retrofitandroidtutorial.models.User;
 //import com.aswdc.archdaily.models.UserDetail;
 
-public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.UsersViewHolder> {
+public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.UsersViewHolder> implements Filterable {
     private static final int REQUEST_PHONE_CALL = 1;
 
     private Activity context;
+    ValueFilter valueFilter;
     private ArrayList<ListClientModel> listEvents;
+    ArrayList<ListClientModel> listEventsFiltered;
+
 
     public HomeAllTabAdapter(Activity context, ArrayList<ListClientModel> listEvents) {
         this.context = context;
         this.listEvents = listEvents;
+        this.listEventsFiltered = listEvents;
     }
     @NonNull
     @Override
@@ -61,9 +66,7 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
     public void onBindViewHolder(@NonNull UsersViewHolder holder, int position) {
 //        EventDetail eventDetail = new EventDetail();
 //        UserDetail userDetail = new UserDetail();
-
-
-
+        final ListClientModel list = listEventsFiltered.get(position);
         holder.textMobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +74,7 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
                     ActivityCompat.requestPermissions( context, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL );
                 } else {
                     Intent i;
-                    i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + listEvents.get( position ).getMobile_no()));
+                    i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + list.getMobile_no()));
                     context.startActivity(i);
                 }
             }
@@ -83,7 +86,7 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
                     String headerReceiver = "";// Replace with your message.
                     String bodyMessageFormal = "";// Replace with your message.
                     String whatsappContain = headerReceiver + bodyMessageFormal;
-                    String trimToNumner = listEvents.get( position ).getWp_no(); //10 digit number
+                    String trimToNumner = list.getWp_no(); //10 digit number
                     Intent intent = new Intent ( Intent.ACTION_VIEW );
                     intent.setData ( Uri.parse ( "https://wa.me/" + trimToNumner + "/?text=" + "Hello" ) );
                     context.startActivity(intent);
@@ -119,15 +122,13 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
             @Override
             public void onClick(View view) {
                 Api api = RetrofitClient.getApi().create(Api.class);
-                Call<ApiResponseWithoutResData> call = api.saveButtonclientlists(listEvents.get( position ).getClientId());
+                Call<ApiResponseWithoutResData> call = api.saveButtonclientlists(list.getClientId());
                 call.enqueue( new Callback<ApiResponseWithoutResData>() {
                     @Override
                     public void onResponse(Call<ApiResponseWithoutResData> call, Response<ApiResponseWithoutResData> response) {
                         if (response.body().getResCode() == 1) {
-
-
                             holder.savebutton.setColorFilter(context.getResources().getColor(R.color.AliceBlue));
-                            Toast.makeText(context, listEvents.get( position ).getFirmName()+response.body().getResMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, list.getFirmName()+response.body().getResMessage(), Toast.LENGTH_SHORT).show();
 
                         }
                         else
@@ -141,8 +142,6 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
                     public void onFailure(Call<ApiResponseWithoutResData> call, Throwable t) {
                         Log.d("Z",""+t.getLocalizedMessage());
                         Toast.makeText( context,"Error", Toast.LENGTH_LONG ).show();
-
-
                     }
                 } );
 
@@ -153,9 +152,9 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
         } );
 //        holder.First_letter.setText( listEvents.get( position ).getEventName());
 
-        holder.textViewProjectName.setText( listEvents.get( position ).getFirmName() );
-        holder.textMobile.setText( listEvents.get( position ).getMobile_no() );
-        holder.textwp.setText( listEvents.get( position ).getWp_no() );
+        holder.textViewProjectName.setText( list.getFirmName() );
+        holder.textMobile.setText( list.getMobile_no() );
+        holder.textwp.setText( list.getWp_no() );
 
 //        holder.First_letter.setText(listEvents.get( position ).getFirmName().charAt( 0 ));
 //        holder.textStatus.setText(listEvents.get(position).getStatus());
@@ -168,7 +167,47 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
 
     @Override
     public int getItemCount() {
-        return listEvents.size();
+        return listEventsFiltered.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+            valueFilter = new ValueFilter();
+        return valueFilter;
+    }
+
+    private class ValueFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            String charString = constraint.toString();
+            if (charString.isEmpty()) {
+                listEventsFiltered = listEvents;
+            } else {
+                ArrayList<ListClientModel> filteredList = new ArrayList<>();
+                for (ListClientModel row : listEvents) {
+
+                    // name match condition. this might differ depending on your requirement
+                    // here we are looking for name or phone number match
+                    if (row.getFirmName().toLowerCase().contains(charString.toLowerCase())) {
+                        filteredList.add(row);
+                    }
+                }
+
+                listEventsFiltered = filteredList;
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = listEventsFiltered;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint,
+                                      FilterResults results) {
+            listEventsFiltered = (ArrayList<ListClientModel>) results.values;
+            notifyDataSetChanged();
+        }
+
     }
 
     class UsersViewHolder extends RecyclerView.ViewHolder {

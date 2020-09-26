@@ -2,15 +2,20 @@ package com.likeview.csm.Fragment;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.renderscript.ScriptGroup;
 import android.text.InputType;
@@ -32,6 +37,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -46,7 +52,11 @@ import com.likeview.csm.R;
 import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -74,6 +84,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     Bitmap bitmap;
     Uri uri;
     ImageView chooseLogo;
+    protected static final int CAMERA_REQUEST = 0;
     private static final int PICK_IMAGE = 1;
     Spinner spStateAddUser;
     TextInputEditText datepick;
@@ -151,28 +162,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
             }
         });
 
-        datepick.setText(getCurrentDate());
-        Calendar newCalendar = Calendar.getInstance();
-
-        datepick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                        datepick.setText(dayOfMonth+"/"+(month+1)+"/"+year);
-                    }
-                },  newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
     }
-
-    String getCurrentDate() {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy");
-        return sdf.format(cal.getTime());
-    }
-
     String getCurrentDate() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy");
@@ -242,33 +232,116 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult( requestCode, resultCode, data );
-        switch (requestCode) {
-            case PICK_IMAGE:
-                if (resultCode == RESULT_OK) {
-                    uri = data.getData();
-                    try {
-//                        bitmap = MediaStore.Images.Media.getBitmap( getContentResolver(), uri );
-                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
-                        chooseLogo.setImageBitmap( bitmap );
-                        Log.d("bitmap",""+bitmap);
-//                        String imagepath = data.getData().getPath();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1) {
+                File f = new File(Environment.getExternalStorageDirectory().toString());
+                for (File temp : f.listFiles()) {
+                    if (temp.getName().equals("temp.jpg")) {
+                        f = temp;
+                        break;
                     }
                 }
-                break;
+                try {
+                    Bitmap bitmap;
+                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
+                            bitmapOptions);
+                    chooseLogo.setImageBitmap(bitmap);
+                    String path = android.os.Environment
+                            .getExternalStorageDirectory()
+                            + File.separator
+                            + "Phoenix" + File.separator + "default";
+                    f.delete();
+                    OutputStream outFile = null;
+                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
+                    try {
+                        outFile = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
+                        outFile.flush();
+                        outFile.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (requestCode == 2) {
+                Uri selectedImage = data.getData();
+                String[] filePath = { MediaStore.Images.Media.DATA };
+                Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+//                Log.d("path of image from gallery......******************.........", picturePath+"");
+                chooseLogo.setImageBitmap(thumbnail);
+            }
         }
-
     }
 
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+////        super.onActivityResult( requestCode, resultCode, data );
+//        switch (requestCode) {
+//            case PICK_IMAGE:
+//                if (resultCode == RESULT_OK) {
+//                    uri = data.getData();
+//                    try {
+////                        bitmap = MediaStore.Images.Media.getBitmap( getContentResolver(), uri );
+//                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
+//                        chooseLogo.setImageBitmap( bitmap );
+//                        Log.d("bitmap",""+bitmap);
+////                        String imagepath = data.getData().getPath();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                break;
+//        }
+//
+//    }
+
+
+//    private void selectImage() {
+//        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions( getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_IMAGE );
+//        } else {
+//            Intent galleryIntent = new Intent( Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI );
+//            startActivityForResult( galleryIntent, PICK_IMAGE );
+//        }
+//    }
 
     private void selectImage() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions( getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PICK_IMAGE );
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions( getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PICK_IMAGE );
         } else {
-            Intent galleryIntent = new Intent( Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI );
-            startActivityForResult( galleryIntent, PICK_IMAGE );
+            final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Add Photo!");
+            builder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    if (options[item].equals("Take Photo")) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+//                        Uri f = FileProvider.getUriForFile(context, android.os.Environment.getExternalStorageDirectory() + ".provider", new File("temp.jpg"));
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, f);
+                        startActivityForResult(intent, 1);
+                    } else if (options[item].equals("Choose from Gallery")) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 2);
+                    } else if (options[item].equals("Cancel")) {
+                        dialog.dismiss();
+                    }
+                }
+            });
+            builder.show();
         }
     }
 
