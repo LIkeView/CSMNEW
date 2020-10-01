@@ -1,8 +1,10 @@
 package com.likeview.csm.Fragment;
 
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -98,8 +100,25 @@ public class NavSaveFragment extends Fragment {
         }
         else
         {
-            Toast.makeText(getActivity(),"No Internet Connection", Toast.LENGTH_LONG).show();
+            try {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+
+                alertDialog.setTitle("Info");
+                alertDialog.setMessage("Internet not available, Cross check your internet connectivity and try again");
+                alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+                alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        getActivity().finish();
+
+                    }
+                });
+
+                alertDialog.show();
+            } catch (Exception e) {
+//                Log.d(SyncStateContract.Constants.TAG, "Show Dialog: " + e.getMessage());
+            }
         }
+
 
     }
     void initReference() {

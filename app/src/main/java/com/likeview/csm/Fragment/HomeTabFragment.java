@@ -1,7 +1,10 @@
 package com.likeview.csm.Fragment;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,11 +52,15 @@ public class HomeTabFragment extends Fragment {
     Toolbar toolbar;
     NavigationView navigationView;
     TextView navUserName;
+    SearchManager searchManager;
     ImageView backButton;
     LinearLayoutManager manager;
     Boolean isScrolling = false;
+    SearchView searchViewhome;
+    ArrayList<ListClientModel> subfilesWithUserDetailHistories;
     int currentItems, totalItems, scrollOutItems;
     int index;
+    HomeTabAdapter homeTabAdapter;
     public HomeTabFragment(int i) {
         this.index = i;
     }
@@ -72,6 +80,9 @@ public class HomeTabFragment extends Fragment {
         toolbar = view.findViewById( R.id.toolbar );
         rcvallSubFileList = view.findViewById( R.id.rcvallSubFileList );
         navUserName  = view.findViewById( R.id.navUserName );
+        searchViewhome = view.findViewById(R.id.searchViewhome);
+        searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
 
         manager = new LinearLayoutManager( getActivity() );
         rcvallSubFileList.setLayoutManager( manager );
@@ -83,8 +94,25 @@ public class HomeTabFragment extends Fragment {
         }
         else
         {
-            Toast.makeText(getActivity(),"No Internet Connection", Toast.LENGTH_LONG).show();
+            try {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+
+                alertDialog.setTitle("Info");
+                alertDialog.setMessage("Internet not available, Cross check your internet connectivity and try again");
+                alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+                alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        getActivity().finish();
+
+                    }
+                });
+
+                alertDialog.show();
+            } catch (Exception e) {
+//                Log.d(SyncStateContract.Constants.TAG, "Show Dialog: " + e.getMessage());
+            }
         }
+
 
     }
     void initReference() {
@@ -146,8 +174,9 @@ public class HomeTabFragment extends Fragment {
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.body().getResCode() == 1) {
                     progress.dismiss();
-                    ArrayList<ListClientModel> subfilesWithUserDetailHistories = (ArrayList<ListClientModel>) response.body().getResData().getListClient();
-                    rcvallSubFileList.setAdapter(new HomeTabAdapter(getActivity(), subfilesWithUserDetailHistories));
+                    subfilesWithUserDetailHistories = (ArrayList<ListClientModel>) response.body().getResData().getListClient();
+                    homeTabAdapter = new HomeTabAdapter(getActivity(), subfilesWithUserDetailHistories);
+                    rcvallSubFileList.setAdapter(homeTabAdapter);
                 }
                 else
                 {
@@ -165,6 +194,28 @@ public class HomeTabFragment extends Fragment {
 
             }
         } );
+
+        searchViewhome.setSearchableInfo(
+                searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchViewhome.setIconifiedByDefault(false);
+
+        searchViewhome.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+//                if(subfilesWithUserDetailHistories.contains(s)){
+                homeTabAdapter.getFilter().filter(s);
+//                }else{
+//                    Toast.makeText(getContext(), "No Match found",Toast.LENGTH_LONG).show();
+//                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                homeTabAdapter.getFilter().filter(s);
+                return false;
+            }
+        });
 
     }
 }

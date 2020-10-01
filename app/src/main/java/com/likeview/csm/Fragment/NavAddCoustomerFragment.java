@@ -2,8 +2,10 @@ package com.likeview.csm.Fragment;
 
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,11 +16,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.renderscript.ScriptGroup;
 import android.text.InputType;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +39,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
@@ -49,6 +54,7 @@ import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.ApiResponseWithoutResData;
 import com.likeview.csm.MainActivity;
 import com.likeview.csm.R;
+import com.likeview.csm.Reciver.RemainderBroadCast;
 import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
 
@@ -57,8 +63,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -345,15 +353,49 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnSubmit:
                 userLogin();
+                setNotification();
                 break;
             case R.id.chooseLogo:
                 selectImage();
                 break;
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void setNotification() {
+        Log.d("check::1::","abcd");
+        Toast.makeText(getContext(), "Reminder Set!", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(getContext(), RemainderBroadCast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),0,intent,0);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(System.currentTimeMillis());
+        cal.clear();
+
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = format.parse(datepick.getText().toString());
+            Log.d("abcde",""+date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String dayOfTheWeek = (String) DateFormat.format("EEEE", date);
+        Log.d("abcd",dayOfTheWeek);
+        cal.set(2020,9,29,16,54);
+
+        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+//                long timeAtButtonClick = System.currentTimeMillis();
+//                long tenSecond = 1000*10;
+        alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+//                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeAtButtonClick+tenSecond,AlarmManager.INTERVAL_DAY,pendingIntent);
     }
 }

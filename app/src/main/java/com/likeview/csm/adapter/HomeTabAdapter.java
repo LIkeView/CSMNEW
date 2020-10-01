@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,15 +27,19 @@ import java.util.ArrayList;
 //import net.simplifiedcoding.retrofitandroidtutorial.models.User;
 //import com.aswdc.archdaily.models.UserDetail;
 
-public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.UsersViewHolder> {
+public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.UsersViewHolder> implements Filterable {
     private static final int REQUEST_PHONE_CALL = 1;
 
     private Activity context;
+    HomeTabAdapter.ValueFilter valueFilter;
     private ArrayList<ListClientModel> listEvents;
+    ArrayList<ListClientModel> listEventsFiltered;
 
     public HomeTabAdapter(Activity context, ArrayList<ListClientModel> listEvents) {
         this.context = context;
         this.listEvents = listEvents;
+        this.listEventsFiltered = listEvents;
+
     }
     @NonNull
     @Override
@@ -47,7 +53,7 @@ public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.UsersVie
 //        EventDetail eventDetail = new EventDetail();
 //        UserDetail userDetail = new UserDetail();
 
-
+        final ListClientModel list = listEventsFiltered.get(position);
 
         holder.textMobile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +62,7 @@ public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.UsersVie
                     ActivityCompat.requestPermissions( context, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL );
                 } else {
                     Intent i;
-                    i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + listEvents.get( position ).getMobile_no()));
+                    i = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + list.getMobile_no()));
                     context.startActivity(i);
                 }
             }
@@ -68,7 +74,7 @@ public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.UsersVie
                     String headerReceiver = "";// Replace with your message.
                     String bodyMessageFormal = "";// Replace with your message.
                     String whatsappContain = headerReceiver + bodyMessageFormal;
-                    String trimToNumner = listEvents.get( position ).getWp_no(); //10 digit number
+                    String trimToNumner = list.getWp_no(); //10 digit number
                     Intent intent = new Intent ( Intent.ACTION_VIEW );
                     intent.setData ( Uri.parse ( "https://wa.me/" + trimToNumner + "/?text=" + "Hello" ) );
                     context.startActivity(intent);
@@ -98,9 +104,9 @@ public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.UsersVie
 //        } );
 //        holder.First_letter.setText( listEvents.get( position ).getEventName());
 
-        holder.textViewProjectName.setText( listEvents.get( position ).getFirmName() );
-        holder.textMobile.setText( listEvents.get( position ).getMobile_no() );
-        holder.textwp.setText( listEvents.get( position ).getWp_no() );
+        holder.textViewProjectName.setText( list.getFirmName() );
+        holder.textMobile.setText( list.getMobile_no() );
+        holder.textwp.setText( list.getWp_no() );
 
         //        holder.textAmount.setText(listEvents.get( position ).getFees());
 //        holder.textStatus.setText(listEvents.get(position).getStatus());
@@ -113,7 +119,46 @@ public class HomeTabAdapter extends RecyclerView.Adapter<HomeTabAdapter.UsersVie
 
     @Override
     public int getItemCount() {
-        return listEvents.size();
+        return listEventsFiltered.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        valueFilter = new HomeTabAdapter.ValueFilter();
+        return valueFilter;
+    }
+    private class ValueFilter extends Filter {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            String charString = constraint.toString();
+            if (charString.isEmpty()) {
+                listEventsFiltered = listEvents;
+            } else {
+                ArrayList<ListClientModel> filteredList = new ArrayList<>();
+                for (ListClientModel row : listEvents) {
+
+                    // name match condition. this might differ depending on your requirement
+                    // here we are looking for name or phone number match
+                    if (row.getFirmName().toLowerCase().contains(charString.toLowerCase())) {
+                        filteredList.add(row);
+                    }
+                }
+
+                listEventsFiltered = filteredList;
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = listEventsFiltered;
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint,
+                                      FilterResults results) {
+            listEventsFiltered = (ArrayList<ListClientModel>) results.values;
+            notifyDataSetChanged();
+        }
+
     }
 
     class UsersViewHolder extends RecyclerView.ViewHolder {
