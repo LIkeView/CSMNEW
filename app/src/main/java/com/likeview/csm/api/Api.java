@@ -2,6 +2,7 @@ package com.likeview.csm.api;
 
 
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.ApiResponseWithoutResData;
 
@@ -81,8 +82,26 @@ public interface Api {
     @FormUrlEncoded
     @POST("addCoustomer")
     Call<ApiResponseWithoutResData> getAddCoustomer(
-            @Field("type_id") int TypeId,
-            @Field("firm_name") String firm_name
+            @Field("type_id") String TypeId,
+            @Field("firm_name") String firm_name,
+            @Field("personal_name") String personal_name,
+            @Field("address") String address,
+            @Field("city") String city,
+            @Field("state") String state,
+            @Field("email") String email,
+            @Field("website") String website,
+            @Field("mobile_no") String mobile_no,
+            @Field("wp_no") String wp_no,
+            @Field("req_size") String req_size,
+            @Field("qty") String qty,
+            @Field("payment_type") String payment_type,
+            @Field("credit_time") String credit_time,
+            @Field("dealing_with") String dealing_with,
+            @Field("dealing_firm") String dealing_firm,
+            @Field("dealing_since") String dealing_since,
+            @Field("notifaction_date") TextInputEditText notifaction_date,
+            @Field("communication") String communication
+
     );
 
 //    @FormUrlEncoded
