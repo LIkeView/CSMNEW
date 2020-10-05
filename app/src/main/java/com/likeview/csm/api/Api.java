@@ -88,6 +88,7 @@ public interface Api {
             @Field("address") String address,
             @Field("city") String city,
             @Field("state") String state,
+            @Field("country") String country,
             @Field("email") String email,
             @Field("website") String website,
             @Field("mobile_no") String mobile_no,
@@ -99,7 +100,7 @@ public interface Api {
             @Field("dealing_with") String dealing_with,
             @Field("dealing_firm") String dealing_firm,
             @Field("dealing_since") String dealing_since,
-            @Field("notifaction_date") TextInputEditText notifaction_date,
+            @Field("notifaction_date") String notifaction_date,
             @Field("communication") String communication
 
     );

@@ -84,7 +84,8 @@ import static android.app.Activity.RESULT_OK;
 public class NavAddCoustomerFragment extends Fragment implements View.OnClickListener{
     TextView textUserName ,textPhoneNumber,textEmail,textCity,textState,textCountry,textPincode;
     TextInputEditText editTextFirmName,editTextPersionName,editTextAddressLine1,editTextAddressLine2,editTextCity,editTextState,editTextCountry;
-    TextInputEditText editTextEmail,editTextMobile,editTextWhatsap,editTextWebsite,editTextTilesSize,editTextQuantity,editTextPaymentType,editTextCreditTime,editTextDealingWith,editTextDealingFirm,editTextDealingSince,editTextCommunication;
+    TextInputEditText editTextEmail,editTextMobile,editTextWhatsap,editTextWebsite,editTextTilesSize,editTextQuantity,editTextPaymentType,editTextCreditTime,editTextDealingWith,editTextDealingFirm,editTextDealingSince,editTextCommunication,datepick;
+    String NotifactionDate = "";
     ImageView textEdit;
     CircleImageView imgUserProfilePhoto;
     Button btnSubmit;
@@ -99,7 +100,6 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     private static final int PICK_IMAGE = 1;
     public static final int BITMAP_SAMPLE_SIZE = 8;
     Spinner spStateAddUser;
-    TextInputEditText datepick;
     TextInputLayout datelayout;
     private SimpleDateFormat dateFormatter;
     private DatePickerDialog DatePickerDialog;
@@ -151,8 +151,6 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
 
         btnSubmit = view.findViewById( R.id.btnSubmit );
         btnSubmit.setOnClickListener( this );
-//        datepick = view.findViewById(R.id.datepickeredit);
-//        datepick.setInputType(InputType.TYPE_NULL);
         datepick = view.findViewById(R.id.datepicker);
         datepick.setInputType(InputType.TYPE_NULL);
         datelayout = view.findViewById(R.id.datlayout);
@@ -206,7 +204,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     }
     String getCurrentDate() {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(cal.getTime());
     }
 
@@ -233,10 +231,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         String DealingFirm = editTextDealingFirm.getText().toString().trim();
         String DealingSince = editTextDealingSince.getText().toString().trim();
         String Communication = editTextCommunication.getText().toString().trim();
-
-
-
-
+        NotifactionDate = datepick.getText().toString().trim();
 
 
 
@@ -266,8 +261,8 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
 //        }
 
         Api api = RetrofitClient.getApi().create( Api.class );
-        Call<ApiResponseWithoutResData> call = api.getAddCoustomer( spid,FirmName,PersionName,AddressLine1,City,State,Country,Website,Mobile,Whatsap,TilesSize,
-                Quantity,PaymentType,CreditTime,DealingWith,DealingFirm,DealingSince,datepick,Communication);
+        Call<ApiResponseWithoutResData> call = api.getAddCoustomer( spid,FirmName,PersionName,AddressLine1,City,State,Country,Email,Website,Mobile,Whatsap,TilesSize,
+                Quantity,PaymentType,CreditTime,DealingWith,DealingFirm,DealingSince,NotifactionDate,Communication);
 
 
         call.enqueue( new Callback<ApiResponseWithoutResData>() {
@@ -446,14 +441,28 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        String NotifyDate = datepick.getText().toString().trim();
+//        String insertDate = EventListAdapter.KEY_DATE;
+        String[] items1 = NotifyDate.split("/");
+        String d1=items1[0];
+        String m1=items1[1];
+        String y1=items1[2];
+        int d = Integer.parseInt(d1);
+        int m = Integer.parseInt(m1);
+        int y = Integer.parseInt(y1);
+        Log.d( "notification::d",""+d );
+        Log.d( "notification::m",""+m );
+        Log.d( "notification::y",""+y );
+        Log.d( "notification",""+datepick.getText().toString() );
+
 //        String dayOfTheWeek = (String) DateFormat.format("EEEE", date);
 //        Log.d("abcd",dayOfTheWeek);
-        cal.set(2020,9,29,16,54);
+        cal.set(y,m,d,15,20);
 
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-//                long timeAtButtonClick = System.currentTimeMillis();
-//                long tenSecond = 1000*10;
+                long timeAtButtonClick = System.currentTimeMillis();
+                long tenSecond = 1000*10;
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-//                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeAtButtonClick+tenSecond,AlarmManager.INTERVAL_DAY,pendingIntent);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeAtButtonClick+tenSecond,AlarmManager.INTERVAL_DAY,pendingIntent);
     }
 }
