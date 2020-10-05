@@ -92,6 +92,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     Bitmap bitmap;
     Uri uri;
     ImageView chooseLogo;
+    public static final int BITMAP_SAMPLE_SIZE = 8;
     protected static final int CAMERA_REQUEST = 0;
     private static final int PICK_IMAGE = 1;
     Spinner spStateAddUser;
@@ -251,11 +252,10 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                     }
                 }
                 try {
-                    Bitmap bitmap;
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
-                    chooseLogo.setImageBitmap(bitmap);
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+//                    imageView.setImageBitmap(imageBitmap);
+                    chooseLogo.setImageBitmap(imageBitmap);
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
                             + File.separator
