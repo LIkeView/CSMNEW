@@ -35,6 +35,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.likeview.csm.R.drawable.ic_baseline_favorite_24;
+import static com.likeview.csm.R.drawable.ic_baseline_favorite_border_24;
+
 //import android.support.annotation.NonNull;
 //import android.support.v7.widget.RecyclerView;
 //import net.simplifiedcoding.retrofitandroidtutorial.R;
@@ -118,6 +121,21 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
                 context.startActivity(intent);
             }
         } );
+        Log.d( "save",""+list.getIs_saved() );
+        if (list.getIs_saved() != "no"){
+            holder.savebutton.setBackgroundResource( ic_baseline_favorite_24 );
+            Log.d( "save::1",""+list.getIs_saved() );
+
+        }
+        if (list.getIs_saved() != "yes"){
+            holder.savebutton.setBackgroundResource(ic_baseline_favorite_border_24  );
+            Log.d( "save::2",""+list.getIs_saved() );
+
+        }
+        else {
+            Log.d( "save::3",""+list.getIs_saved() );
+
+        }
         holder.savebutton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,13 +145,13 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
                     @Override
                     public void onResponse(Call<ApiResponseWithoutResData> call, Response<ApiResponseWithoutResData> response) {
                         if (response.body().getResCode() == 1) {
-                            holder.savebutton.setColorFilter(context.getResources().getColor(R.color.AliceBlue));
+                            holder.savebutton.setBackgroundResource( ic_baseline_favorite_24 );
                             Toast.makeText(context, list.getFirmName()+response.body().getResMessage(), Toast.LENGTH_SHORT).show();
 
                         }
                         else
                         {
-                            Toast.makeText(context, "Data not found", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
                         }
 //                progress.dismiss();
 
@@ -151,6 +169,7 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
             }
         } );
 //        holder.First_letter.setText( listEvents.get( position ).getEventName());
+
 
         holder.textViewProjectName.setText( list.getFirmName() );
         holder.textMobile.setText( list.getMobile_no() );
