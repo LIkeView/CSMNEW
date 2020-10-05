@@ -122,12 +122,12 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
             }
         } );
         Log.d( "save",""+list.getIs_saved() );
-        if (list.getIs_saved() != "no"){
+        if (list.getIs_saved() == "yes"){
             holder.savebutton.setBackgroundResource( ic_baseline_favorite_24 );
             Log.d( "save::1",""+list.getIs_saved() );
 
         }
-        if (list.getIs_saved() != "yes"){
+        if (list.getIs_saved() == "no"){
             holder.savebutton.setBackgroundResource(ic_baseline_favorite_border_24  );
             Log.d( "save::2",""+list.getIs_saved() );
 

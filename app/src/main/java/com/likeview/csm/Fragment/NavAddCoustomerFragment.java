@@ -41,6 +41,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -82,6 +83,9 @@ import static android.app.Activity.RESULT_OK;
  */
 public class NavAddCoustomerFragment extends Fragment implements View.OnClickListener{
     TextView textUserName ,textPhoneNumber,textEmail,textCity,textState,textCountry,textPincode;
+    TextInputEditText editTextFirmName,editTextPersionName,editTextAddressLine1,editTextAddressLine2,editTextCity,editTextState,editTextCountry;
+    TextInputEditText editTextEmail,editTextMobile,editTextWhatsap,editTextWebsite,editTextTilesSize,editTextQuantity,editTextPaymentType,editTextCreditTime,editTextDealingWith,editTextDealingFirm,editTextDealingSince,editTextCommunication,datepick;
+    String NotifactionDate = "";
     ImageView textEdit;
     CircleImageView imgUserProfilePhoto;
     Button btnSubmit;
@@ -94,11 +98,13 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     ImageView chooseLogo;
     protected static final int CAMERA_REQUEST = 0;
     private static final int PICK_IMAGE = 1;
+    public static final int BITMAP_SAMPLE_SIZE = 8;
     Spinner spStateAddUser;
-    TextInputEditText datepick;
     TextInputLayout datelayout;
     private SimpleDateFormat dateFormatter;
     private DatePickerDialog DatePickerDialog;
+    String spid;
+    CardView viewVisitingCard;
 //    SharedPrefManager sfm = SharedPrefManager.getInstance(getActivity());
 //    ProfileDetail pd = sfm.getUser();
 
@@ -119,10 +125,32 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         toolbar=  view.findViewById(R.id.toolbar);
         toolbartext=  view.findViewById(R.id.toolbartext);
         toolbartext.setText( "Add Coustomer" );
+
+
+
+        editTextFirmName = view.findViewById(R.id.editTextFirmName);
+        editTextPersionName = view.findViewById(R.id.editTextPersionName);
+        editTextAddressLine1 = view.findViewById(R.id.editTextAddressLine1);
+        editTextAddressLine2 = view.findViewById(R.id.editTextAddressLine2);
+        editTextCity = view.findViewById(R.id.editTextCity);
+        editTextState = view.findViewById(R.id.editTextState);
+        editTextCountry = view.findViewById(R.id.editTextCountry);
+
+        editTextEmail = view.findViewById( R.id.editTextEmail );
+        editTextMobile = view.findViewById( R.id.editTextMobile );
+        editTextWhatsap = view.findViewById( R.id.editTextWhatsap );
+        editTextWebsite = view.findViewById( R.id.editTextWebsite );
+        editTextTilesSize = view.findViewById( R.id.editTextTilesSize );
+        editTextQuantity= view.findViewById( R.id.editTextQuantity );
+        editTextPaymentType = view.findViewById( R.id.editTextPaymentType );
+        editTextCreditTime = view.findViewById( R.id.editTextCreditTime );
+        editTextDealingWith = view.findViewById( R.id.editTextDealingWith );
+        editTextDealingFirm = view.findViewById( R.id.editTextDealingFirm );
+        editTextDealingSince = view.findViewById( R.id.editTextDealingSince );
+        editTextCommunication = view.findViewById( R.id.editTextCommunication );
+
         btnSubmit = view.findViewById( R.id.btnSubmit );
         btnSubmit.setOnClickListener( this );
-//        datepick = view.findViewById(R.id.datepickeredit);
-//        datepick.setInputType(InputType.TYPE_NULL);
         datepick = view.findViewById(R.id.datepicker);
         datepick.setInputType(InputType.TYPE_NULL);
         datelayout = view.findViewById(R.id.datlayout);
@@ -140,9 +168,12 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spStateAddUser.setAdapter(adapter);
         spStateAddUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id ) {
 //                Hold = spStateAddUser.getSelectedItemPosition();
+                spid = String.valueOf(spStateAddUser.getSelectedItemPosition());
+
                 Log.v("item", String.valueOf(spStateAddUser.getSelectedItemPosition()));
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
 
@@ -173,14 +204,37 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     }
     String getCurrentDate() {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(cal.getTime());
     }
 
     private void userLogin() {
 
 //        String email = editTextEmail.getText().toString().trim();
-        String Name = "Darshan Kasundra";
+//        String Name = "Darshan Kasundra";
+        String FirmName = editTextFirmName.getText().toString().trim();
+        String PersionName = editTextPersionName.getText().toString().trim();
+        String AddressLine1 = editTextAddressLine1.getText().toString().trim();
+        String AddressLine2 = editTextAddressLine2.getText().toString().trim();
+        String City = editTextCity.getText().toString().trim();
+        String State = editTextState.getText().toString().trim();
+        String Country = editTextCountry.getText().toString().trim();
+        String Email = editTextEmail.getText().toString().trim();
+        String Mobile = editTextMobile.getText().toString().trim();
+        String Whatsap = editTextWhatsap.getText().toString().trim();
+        String Website = editTextWebsite.getText().toString().trim();
+        String TilesSize = editTextTilesSize.getText().toString().trim();
+        String Quantity = editTextQuantity.getText().toString().trim();
+        String PaymentType = editTextPaymentType.getText().toString().trim();
+        String CreditTime = editTextCreditTime.getText().toString().trim();
+        String DealingWith = editTextDealingWith.getText().toString().trim();
+        String DealingFirm = editTextDealingFirm.getText().toString().trim();
+        String DealingSince = editTextDealingSince.getText().toString().trim();
+        String Communication = editTextCommunication.getText().toString().trim();
+        NotifactionDate = datepick.getText().toString().trim();
+
+
+
 
 //        if (email.isEmpty()) {
 //            editTextEmail.setError( "Email is required" );
@@ -205,22 +259,19 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
 //            editTextPassword.requestFocus();
 //            return;
 //        }
-        Log.d( "Dk::2", "Hello" );
 
         Api api = RetrofitClient.getApi().create( Api.class );
-        Call<ApiResponseWithoutResData> call = api.getAddCoustomer( 1,"Darshan Kasundra" );
+        Call<ApiResponseWithoutResData> call = api.getAddCoustomer( spid,FirmName,PersionName,AddressLine1,City,State,Country,Email,Website,Mobile,Whatsap,TilesSize,
+                Quantity,PaymentType,CreditTime,DealingWith,DealingFirm,DealingSince,NotifactionDate,Communication);
 
-        Log.d( "Dk::2", "Hello" );
 
         call.enqueue( new Callback<ApiResponseWithoutResData>() {
             @Override
             public void onResponse(Call<ApiResponseWithoutResData> call, Response<ApiResponseWithoutResData> response) {
                 ApiResponseWithoutResData apiResponseWithoutResData = response.body();
-                Log.d( "Dk::1", "" + apiResponseWithoutResData.getResMessage() );
-
                 if (response.body().getResCode() == 1) {
                     Log.d( "Dk", "" + apiResponseWithoutResData.getResMessage() );
-                    Toast.makeText( getActivity(), apiResponseWithoutResData.getResMessage(), Toast.LENGTH_LONG ).show();
+                    Toast.makeText( getActivity(), FirmName + " Added", Toast.LENGTH_LONG ).show();
 //                    Intent intent = new Intent( LoginActivity.this, MainNavActivity.class );
 //                    intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
 //                    startActivity( intent );
@@ -242,8 +293,11 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
+                if (requestCode == PICK_IMAGE) {
                 File f = new File(Environment.getExternalStorageDirectory().toString());
+//                    File pathnew = Environment.getExternalStoragePublicDirectory(
+//                            Environment.DIRECTORY_PICTURES);
+//                    File filenew = new File(pathnew, "DemoPicture.jpg");
                 for (File temp : f.listFiles()) {
                     if (temp.getName().equals("temp.jpg")) {
                         f = temp;
@@ -251,11 +305,10 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                     }
                 }
                 try {
-                    Bitmap bitmap;
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
-                    chooseLogo.setImageBitmap(bitmap);
+
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    chooseLogo.setImageBitmap(imageBitmap);
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
                             + File.separator
@@ -326,7 +379,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
 //    }
 
     private void selectImage() {
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions( getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PICK_IMAGE );
         } else {
             final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
@@ -340,7 +393,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                         File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
 //                        Uri f = FileProvider.getUriForFile(context, android.os.Environment.getExternalStorageDirectory() + ".provider", new File("temp.jpg"));
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, f);
-                        startActivityForResult(intent, 1);
+                        startActivityForResult(intent, PICK_IMAGE);
                     } else if (options[item].equals("Choose from Gallery")) {
                         Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, 2);
@@ -370,7 +423,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setNotification() {
         Log.d("check::1::","abcd");
-        Toast.makeText(getContext(), "Reminder Set!", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "Reminder Set!", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(getContext(), RemainderBroadCast.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),0,intent,0);
@@ -388,14 +441,28 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String dayOfTheWeek = (String) DateFormat.format("EEEE", date);
-        Log.d("abcd",dayOfTheWeek);
-        cal.set(2020,9,29,16,54);
+        String NotifyDate = datepick.getText().toString().trim();
+//        String insertDate = EventListAdapter.KEY_DATE;
+        String[] items1 = NotifyDate.split("/");
+        String d1=items1[0];
+        String m1=items1[1];
+        String y1=items1[2];
+        int d = Integer.parseInt(d1);
+        int m = Integer.parseInt(m1);
+        int y = Integer.parseInt(y1);
+        Log.d( "notification::d",""+d );
+        Log.d( "notification::m",""+m );
+        Log.d( "notification::y",""+y );
+        Log.d( "notification",""+datepick.getText().toString() );
+
+//        String dayOfTheWeek = (String) DateFormat.format("EEEE", date);
+//        Log.d("abcd",dayOfTheWeek);
+        cal.set(y,m,d,15,20);
 
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-//                long timeAtButtonClick = System.currentTimeMillis();
-//                long tenSecond = 1000*10;
+                long timeAtButtonClick = System.currentTimeMillis();
+                long tenSecond = 1000*10;
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-//                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeAtButtonClick+tenSecond,AlarmManager.INTERVAL_DAY,pendingIntent);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeAtButtonClick+tenSecond,AlarmManager.INTERVAL_DAY,pendingIntent);
     }
 }
