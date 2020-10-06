@@ -25,7 +25,9 @@ import android.renderscript.ScriptGroup;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -37,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -83,12 +86,15 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavAddCoustomerFragment extends Fragment implements View.OnClickListener{
+public class NavAddCoustomerFragment extends Fragment implements View.OnClickListener,View.OnTouchListener{
     TextView textUserName ,textPhoneNumber,textEmail,textCity,textState,textCountry,textPincode;
     TextInputEditText editTextFirmName,editTextPersionName,editTextAddressLine1,editTextAddressLine2,editTextCity,editTextState,editTextCountry;
     TextInputEditText editTextEmail,editTextMobile,editTextWhatsap,editTextWebsite,editTextTilesSize,editTextQuantity,editTextPaymentType,editTextCreditTime,editTextDealingWith,editTextDealingFirm,editTextDealingSince,editTextCommunication,datepick;
     String NotifactionDate = "";
     ImageView textEdit;
+    private ViewFlipper mViewFlipper;
+    private GestureDetector mGestureDetector;
+    int[] resources = { R.drawable.ic_baseline_email_24, R.drawable.ic_baseline_call_24,  R.drawable.ic_baseline_contactless_24, R.drawable.ic_baseline_date_range_24 };
     CircleImageView imgUserProfilePhoto;
     Button btnSubmit;
     ViewPager viewPager;
@@ -157,8 +163,23 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         datepick.setInputType(InputType.TYPE_NULL);
         datelayout = view.findViewById(R.id.datlayout);
         Log.d( "Dk::3", "Hello" );
-        chooseLogo = view.findViewById( R.id.chooseLogo );
-        chooseLogo.setOnClickListener( this );
+        mViewFlipper =  view.findViewById(R.id.viewFlipper);
+
+        for (int i = 0; i < resources.length; i++) {
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setImageResource(resources[i]);
+            mViewFlipper.addView(imageView);
+//            Log.d("image","");
+            mViewFlipper.setInAnimation(getActivity(), android.R.anim.slide_in_left);
+            mViewFlipper.setOutAnimation(getActivity(), android.R.anim.slide_out_right);
+            mViewFlipper.setAutoStart(true);
+            mViewFlipper.setFlipInterval(2000); // flip every 2 seconds (2000ms)
+            CustomGestureDetector customGestureDetector = new CustomGestureDetector();
+            mGestureDetector = new GestureDetector(getActivity(), customGestureDetector);
+        }
+
+//        chooseLogo = view.findViewById( R.id.chooseLogo );
+//        chooseLogo.setOnClickListener( this );
 
         spStateAddUser = view.findViewById(R.id.spStateAddUser);
 
@@ -421,9 +442,9 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                 userLogin();
                 setNotification();
                 break;
-            case R.id.chooseLogo:
-                selectImage();
-                break;
+//            case R.id.chooseLogo:
+//                selectImage();
+//                break;
         }
     }
 
@@ -471,5 +492,30 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                 long tenSecond = 1000*10;
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
                 alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeAtButtonClick+tenSecond,AlarmManager.INTERVAL_DAY,pendingIntent);
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        mGestureDetector.onTouchEvent(event);
+
+        return false;
+    }
+
+    class CustomGestureDetector extends GestureDetector.SimpleOnGestureListener {
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+            // Swipe left (next)
+            if (e1.getX() > e2.getX()) {
+                mViewFlipper.showNext();
+            }
+
+            // Swipe right (previous)
+            if (e1.getX() < e2.getX()) {
+                mViewFlipper.showPrevious();
+            }
+
+            return super.onFling(e1, e2, velocityX, velocityY);
+        }
     }
 }

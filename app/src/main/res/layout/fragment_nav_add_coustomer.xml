@@ -45,23 +45,27 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/dimen_20"
-        android:background="@drawable/rounded_rec_img_shape_bk">
+        android:layout_margin="@dimen/dimen_20">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/viewVisitingCard"
-            android:layout_width="fill_parent"
-            android:layout_height="180dp"
-            card_view:cardCornerRadius="@dimen/dimen_5"
-            android:elevation="5dp"
-            >
-            <ImageView
-                android:id="@+id/chooseLogo"
+<!--        <androidx.cardview.widget.CardView-->
+<!--            android:id="@+id/viewVisitingCard"-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_height="180dp"-->
+<!--            card_view:cardCornerRadius="@dimen/dimen_5"-->
+<!--            android:elevation="5dp"-->
+<!--            >-->
+            <ViewFlipper
+                android:id="@+id/viewFlipper"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/visiting_card" />
-        </androidx.cardview.widget.CardView>
+                android:layout_height="180dp"
+                android:scaleType="fitCenter" />
+<!--            <ImageView-->
+<!--                android:id="@+id/chooseLogo"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="fill_parent"-->
+<!--                android:scaleType="fitCenter"-->
+<!--                android:src="@drawable/visiting_card" />-->
+<!--        </androidx.cardview.widget.CardView>-->
 
         <!--            <ImageButton-->
         <!--                android:layout_width="wrap_content"-->
