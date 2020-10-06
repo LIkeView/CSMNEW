@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -86,6 +87,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     TextInputEditText editTextFirmName,editTextPersionName,editTextAddressLine1,editTextAddressLine2,editTextCity,editTextState,editTextCountry;
     TextInputEditText editTextEmail,editTextMobile,editTextWhatsap,editTextWebsite,editTextTilesSize,editTextQuantity,editTextPaymentType,editTextCreditTime,editTextDealingWith,editTextDealingFirm,editTextDealingSince,editTextCommunication,datepick;
     String NotifactionDate = "";
+    CheckBox reminderCheckBox;
     ImageView textEdit;
     private ViewFlipper mViewFlipper;
     private GestureDetector mGestureDetector;
@@ -456,24 +458,20 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         }
     }
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void setNotification() {
-        Log.d("check::1::","abcd");
-//        Toast.makeText(getContext(), "Reminder Set!", Toast.LENGTH_SHORT).show();
-
         Intent intent = new Intent(getContext(), RemainderBroadCast.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(),0,intent,0);
-
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());
         cal.clear();
-
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
         try {
             date = format.parse(datepick.getText().toString());
-            Log.d("abcde",""+date);
         } catch (ParseException e) {
             e.printStackTrace();
         }

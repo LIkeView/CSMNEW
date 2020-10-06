@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
@@ -15,7 +14,7 @@ import com.likeview.csm.Activity.ClientDetailActivity;
 
 public class RemainderBroadCast extends BroadcastReceiver {
 
-    private static final String Channelid = "Hiral";
+    private static final String Channelid = "CMS";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -23,9 +22,6 @@ public class RemainderBroadCast extends BroadcastReceiver {
         // Call MainActivity when notification is tapped.
         Intent mainIntent = new Intent(context, ClientDetailActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, mainIntent, 0);
-
-        SharedPreferences sharedPreferences = context.getSharedPreferences("myKey",Context.MODE_PRIVATE);
-        String value = sharedPreferences.getString("value","");
 
         // NotificationManager
         NotificationManager notificationManager =
@@ -43,7 +39,7 @@ public class RemainderBroadCast extends BroadcastReceiver {
         // Prepare Notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Channelid)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle(value)
+                .setContentTitle("CMS")
                 .setContentText("Hello")
                 .setContentIntent(contentIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
