@@ -10,6 +10,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -75,6 +76,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 //import com.aswdc.autocadetutorial.adapter.VideoAdapter;
 
@@ -232,6 +234,11 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         String DealingSince = editTextDealingSince.getText().toString().trim();
         String Communication = editTextCommunication.getText().toString().trim();
         NotifactionDate = datepick.getText().toString().trim();
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("myKey", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("value", FirmName);
+        editor.apply();
 
 
 
@@ -457,7 +464,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
 
 //        String dayOfTheWeek = (String) DateFormat.format("EEEE", date);
 //        Log.d("abcd",dayOfTheWeek);
-        cal.set(y,m,d,15,20);
+        cal.set(y,m,d,15,56);
 
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                 long timeAtButtonClick = System.currentTimeMillis();

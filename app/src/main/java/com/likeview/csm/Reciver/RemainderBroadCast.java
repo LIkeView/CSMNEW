@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
@@ -23,6 +24,9 @@ public class RemainderBroadCast extends BroadcastReceiver {
         Intent mainIntent = new Intent(context, ClientDetailActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, mainIntent, 0);
 
+        SharedPreferences sharedPreferences = context.getSharedPreferences("myKey",Context.MODE_PRIVATE);
+        String value = sharedPreferences.getString("value","");
+
         // NotificationManager
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -39,7 +43,7 @@ public class RemainderBroadCast extends BroadcastReceiver {
         // Prepare Notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Channelid)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle("TITLE")
+                .setContentTitle(value)
                 .setContentText("Hello")
                 .setContentIntent(contentIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

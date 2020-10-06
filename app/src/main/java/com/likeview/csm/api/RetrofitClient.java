@@ -16,7 +16,7 @@ public class RetrofitClient {
 
 //    private static final String AUTH = "Basic " + Base64.encodeToString(("belalkhan:123456").getBytes(), Base64.NO_WRAP);
 
-    private static final String BASE_URL = "http://4foxwebsolution.com/ccmsystem.com/api/";
+    private static final String BASE_URL = "http://cms.likeview.in/api/";
     private static RetrofitClient mInstance;
     private static Retrofit retrofit = null;
 
