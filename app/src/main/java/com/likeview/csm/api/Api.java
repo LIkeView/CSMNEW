@@ -56,7 +56,12 @@ public interface Api {
 //    @FormUrlEncoded
 //    @POST("login")
 //    Call<ApiResponse> login(@Field("email_or_phones") String email, @Field("password") String password);
-//@FormUrlEncoded
+
+
+    @FormUrlEncoded
+    @POST("login")
+    Call<ApiResponse> login(@Field("email_or_phones") String email, @Field("password") String password);
+
 
     @POST("listAllclient")
     Call<ApiResponse> getAllclientlists();
@@ -76,6 +81,7 @@ public interface Api {
     Call<ApiResponse> getdetailClient(
             @Field( "client_id" ) int clientId
     );
+
     @POST("savedClient")
     Call<ApiResponse> getsaveclientlists();
 

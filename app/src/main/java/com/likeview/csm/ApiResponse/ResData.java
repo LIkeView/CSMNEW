@@ -4,8 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.likeview.csm.ApiResponse.Model.ClientDetailsModel;
 import com.likeview.csm.ApiResponse.Model.ListClientModel;
+import com.likeview.csm.ApiResponse.Model.ProfileDetailModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ResData {
 
@@ -37,6 +39,18 @@ public class ResData {
 
     public void setClientdetails(ArrayList<ClientDetailsModel> clientdetails) {
         this.clientdetails = clientdetails;
+    }
+
+    @SerializedName("profile_details")
+    @Expose
+    private List<ProfileDetailModel> profileDetails = null;
+
+    public List<ProfileDetailModel> getProfileDetails() {
+        return profileDetails;
+    }
+
+    public void setProfileDetails(List<ProfileDetailModel> profileDetails) {
+        this.profileDetails = profileDetails;
     }
 }
 
