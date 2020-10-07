@@ -6,6 +6,7 @@ import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +21,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.renderscript.ScriptGroup;
 import android.text.InputType;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -32,6 +35,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,14 +48,17 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.ApiResponseWithoutResData;
+import com.likeview.csm.MainActivity;
 import com.likeview.csm.R;
 import com.likeview.csm.Reciver.RemainderBroadCast;
 import com.likeview.csm.api.Api;
@@ -64,8 +71,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -91,18 +96,15 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     ImageView textEdit;
     private ViewFlipper mViewFlipper;
     private GestureDetector mGestureDetector;
-//    int[] resources = { R.drawable.xtj, R.drawable.xtj1,  R.drawable.xtj2, R.drawable.xtj3 };
-    ArrayList<Bitmap> myList = new ArrayList<Bitmap>();
     CircleImageView imgUserProfilePhoto;
     Button btnSubmit;
     ViewPager viewPager;
     TabLayout tabLayout;
     Toolbar toolbar;
-    FloatingActionButton chooseLogo;
     Context context;
     Bitmap bitmap;
     Uri uri;
-//    ImageView chooseLogo;
+    ImageView chooseLogo;
     protected static final int CAMERA_REQUEST = 0;
     private static final int PICK_IMAGE = 1;
     public static final int BITMAP_SAMPLE_SIZE = 8;
@@ -163,11 +165,24 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         datelayout = view.findViewById(R.id.datlayout);
         Log.d( "Dk::3", "Hello" );
         mViewFlipper =  view.findViewById(R.id.viewFlipper);
-        flipper();
+        int[] resources = { R.drawable.user_profile, R.drawable.visiting_card,  R.drawable.whatsapp_16 };
 
+        for (int i = 0; i < resources.length; i++) {
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setImageResource(resources[i]);
+            mViewFlipper.addView(imageView);
+//            Log.d("image","");
+            mViewFlipper.setInAnimation(getActivity(), android.R.anim.slide_in_left);
+            mViewFlipper.setOutAnimation(getActivity(), android.R.anim.slide_out_right);
+            mViewFlipper.setAutoStart(true);
+            mViewFlipper.setFlipInterval(2000); // flip every 2 seconds (2000ms)
+            mViewFlipper.startFlipping();
+            CustomGestureDetector customGestureDetector = new CustomGestureDetector();
+            mGestureDetector = new GestureDetector(getActivity(), customGestureDetector);
+        }
 
-        chooseLogo = view.findViewById( R.id.chooseLogo );
-        chooseLogo.setOnClickListener( this );
+//        chooseLogo = view.findViewById( R.id.chooseLogo );
+//        chooseLogo.setOnClickListener( this );
 
         spStateAddUser = view.findViewById(R.id.spStateAddUser);
 
@@ -217,24 +232,6 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(cal.getTime());
-    }
-
-    public void flipper(){
-        for (int i = 0; i < myList.size(); i++) {
-            ImageView imageView = new ImageView(getActivity());
-//            imageView.setImageResource(Integer.parseInt(String.valueOf(myList.get(i))));
-            imageView.setImageBitmap(myList.get(i));
-            Log.d("bitmap", String.valueOf(myList.get(i)));
-            mViewFlipper.addView(imageView);
-            mViewFlipper.setInAnimation(getActivity(), android.R.anim.slide_in_left);
-            mViewFlipper.setOutAnimation(getActivity(), android.R.anim.slide_out_right);
-            mViewFlipper.setAutoStart(true);
-            mViewFlipper.setFlipInterval(2000);// flip every 2 seconds (2000ms)
-            mViewFlipper.startFlipping();
-            CustomGestureDetector customGestureDetector = new CustomGestureDetector();
-            mGestureDetector = new GestureDetector(getActivity(), customGestureDetector);
-        }
-
     }
 
     private void userLogin() {
@@ -342,9 +339,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
 
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    myList.add(imageBitmap);
-                    flipper();
-//                    chooseLogo.setImageBitmap(imageBitmap);
+                    chooseLogo.setImageBitmap(imageBitmap);
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
                             + File.separator
@@ -377,9 +372,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                 c.close();
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
 //                Log.d("path of image from gallery......******************.........", picturePath+"");
-                    myList.add(thumbnail);
-                    flipper();
-//                chooseLogo.setImageBitmap(thumbnail);
+                chooseLogo.setImageBitmap(thumbnail);
             }
         }
     }
@@ -452,9 +445,9 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                 userLogin();
                 setNotification();
                 break;
-            case R.id.chooseLogo:
-                selectImage();
-                break;
+//            case R.id.chooseLogo:
+//                selectImage();
+//                break;
         }
     }
 
@@ -503,7 +496,6 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         mGestureDetector.onTouchEvent(event);
-
         return false;
     }
 

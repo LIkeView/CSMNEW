@@ -55,11 +55,16 @@
 <!--            card_view:cardCornerRadius="@dimen/dimen_5"-->
 <!--            android:elevation="5dp"-->
 <!--            >-->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <ViewFlipper
                 android:id="@+id/viewFlipper"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:scaleType="fitCenter" />
+        </androidx.cardview.widget.CardView>
+
 <!--            <ImageView-->
 <!--                android:id="@+id/chooseLogo"-->
 <!--                android:layout_width="match_parent"-->
