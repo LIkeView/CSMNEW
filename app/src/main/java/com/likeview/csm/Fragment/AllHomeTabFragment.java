@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.Model.ListClientModel;
@@ -60,6 +61,8 @@ public class AllHomeTabFragment extends Fragment {
     ArrayList<ListClientModel> subfilesWithUserDetailHistories;
     SearchManager searchManager;
     HomeAllTabAdapter homeAllTabAdapter;
+    private ShimmerFrameLayout mShimmerViewContainer;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,9 +81,11 @@ public class AllHomeTabFragment extends Fragment {
         navUserName  = view.findViewById( R.id.navUserName );
         searchView = view.findViewById(R.id.searchView);
         searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container);
 
 
-        manager = new LinearLayoutManager( getActivity() );
+
+        manager = new LinearLayoutManager( getActivity());
         rcvallSubFileList.setLayoutManager( manager );
 
         if(CheckNetwork.isInternetAvailable(getActivity())) //returns true if internet available
@@ -156,11 +161,11 @@ public class AllHomeTabFragment extends Fragment {
     }
 
     void getData(){
-        ProgressDialog progress = new ProgressDialog( getActivity() );
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false);
-        progress.show();
+//        ProgressDialog progress = new ProgressDialog( getActivity() );
+//        progress.setTitle("Loading");
+//        progress.setMessage("Wait while loading...");
+//        progress.setCancelable(false);
+//        progress.show();
 
         Api api = RetrofitClient.getApi().create(Api.class);
         Call<ApiResponse> call = api.getAllclientlists();
@@ -168,14 +173,16 @@ public class AllHomeTabFragment extends Fragment {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.body().getResCode() == 1) {
-                    progress.dismiss();
+//                    progress.dismiss();
                     subfilesWithUserDetailHistories = (ArrayList<ListClientModel>) response.body().getResData().getListClient();
                     homeAllTabAdapter = new HomeAllTabAdapter(getActivity(), subfilesWithUserDetailHistories);
                     rcvallSubFileList.setAdapter(homeAllTabAdapter);
                 }
                 else
                 {
-                    progress.dismiss();
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
+//                    progress.dismiss();
                     Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
                 }
 //                progress.dismiss();
@@ -185,7 +192,7 @@ public class AllHomeTabFragment extends Fragment {
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Log.d("Z",""+t.getLocalizedMessage());
                 Toast.makeText( getActivity(), t.getLocalizedMessage(), Toast.LENGTH_LONG ).show();
-                progress.dismiss();
+//                progress.dismiss();
 
             }
         } );
@@ -212,5 +219,16 @@ public class AllHomeTabFragment extends Fragment {
             }
         });
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerViewContainer.startShimmer();
+    }
+
+    @Override
+    public void onPause() {
+        mShimmerViewContainer.stopShimmer();
+        super.onPause();
     }
 }

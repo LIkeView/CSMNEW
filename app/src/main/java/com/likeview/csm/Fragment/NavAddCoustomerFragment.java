@@ -46,6 +46,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -95,10 +96,11 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     ViewPager viewPager;
     TabLayout tabLayout;
     Toolbar toolbar;
+    FloatingActionButton chooseLogo;
     Context context;
     Bitmap bitmap;
     Uri uri;
-    ImageView chooseLogo;
+//    ImageView chooseLogo;
     protected static final int CAMERA_REQUEST = 0;
     private static final int PICK_IMAGE = 1;
     public static final int BITMAP_SAMPLE_SIZE = 8;

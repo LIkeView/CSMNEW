@@ -28,6 +28,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.Model.ListClientModel;
@@ -60,6 +61,7 @@ public class HomeTabFragment extends Fragment {
     ArrayList<ListClientModel> subfilesWithUserDetailHistories;
     int currentItems, totalItems, scrollOutItems;
     int index;
+    private ShimmerFrameLayout mShimmerViewContainer;
     HomeTabAdapter homeTabAdapter;
     public HomeTabFragment(int i) {
         this.index = i;
@@ -82,6 +84,7 @@ public class HomeTabFragment extends Fragment {
         navUserName  = view.findViewById( R.id.navUserName );
         searchViewhome = view.findViewById(R.id.searchViewhome);
         searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container_home);
 
 
         manager = new LinearLayoutManager( getActivity() );
@@ -161,11 +164,11 @@ public class HomeTabFragment extends Fragment {
     }
 
     void getData(){
-        ProgressDialog progress = new ProgressDialog( getActivity() );
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false);
-        progress.show();
+//        ProgressDialog progress = new ProgressDialog( getActivity() );
+//        progress.setTitle("Loading");
+//        progress.setMessage("Wait while loading...");
+//        progress.setCancelable(false);
+//        progress.show();
 
         Api api = RetrofitClient.getApi().create(Api.class);
         Call<ApiResponse> call = api.getlistclientlists(index);
@@ -173,14 +176,18 @@ public class HomeTabFragment extends Fragment {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.body().getResCode() == 1) {
-                    progress.dismiss();
+//                    progress.dismiss();
                     subfilesWithUserDetailHistories = (ArrayList<ListClientModel>) response.body().getResData().getListClient();
                     homeTabAdapter = new HomeTabAdapter(getActivity(), subfilesWithUserDetailHistories);
                     rcvallSubFileList.setAdapter(homeTabAdapter);
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
                 }
                 else
                 {
-                    progress.dismiss();
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
+//                    progress.dismiss();
                     Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
                 }
 //                progress.dismiss();
@@ -188,9 +195,9 @@ public class HomeTabFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Log.d("Z",""+t.getLocalizedMessage());
+                Log.d("Zxcv",""+t.getLocalizedMessage());
                 Toast.makeText( getActivity(), "Client is not added", Toast.LENGTH_LONG ).show();
-                progress.dismiss();
+//                progress.dismiss();
 
             }
         } );
@@ -217,5 +224,16 @@ public class HomeTabFragment extends Fragment {
             }
         });
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerViewContainer.startShimmer();
+    }
+
+    @Override
+    public void onPause() {
+        mShimmerViewContainer.stopShimmer();
+        super.onPause();
     }
 }
