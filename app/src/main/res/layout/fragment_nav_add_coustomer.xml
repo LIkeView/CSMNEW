@@ -23,6 +23,7 @@
             android:id="@+id/toolbartext"
             style="@style/toolbar_titel_text_style"/>
         <ImageView
+            android:id="@+id/chooseLogo"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dimen_10"
             android:layout_width="wrap_content"
