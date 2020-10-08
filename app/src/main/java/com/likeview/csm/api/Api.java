@@ -111,6 +111,16 @@ public interface Api {
 
     );
 
+    @Multipart
+    @POST("uploadFile")
+    Call<ApiResponseWithoutResData>uplodeFile(
+            @Part("client_id") RequestBody ClientID,
+            @Part MultipartBody.Part visiting_card_front,
+            @Part MultipartBody.Part visiting_card_back,
+            @Part MultipartBody.Part profile_pic
+
+    );
+
 //    @FormUrlEncoded
 //    @POST("eventDetail")
 //    Call<ApiResponse> geteventDetail(

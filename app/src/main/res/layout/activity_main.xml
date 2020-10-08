@@ -28,6 +28,9 @@
             app:navGraph="@navigation/mobile_navigation"
             android:layout_alignParentRight="true"
             android:layout_marginRight="0dp" />
+
+
+
     </RelativeLayout>
 
 

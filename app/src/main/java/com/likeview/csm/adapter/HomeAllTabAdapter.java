@@ -82,6 +82,14 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
                 }
             }
         });
+        Log.d( "check::10",""+list.getWp_no().length() );
+        if (list.getMobile_no().trim().length() != 0){
+            holder.imagecontct.setBackgroundResource( R.drawable.phone_16 );
+        }
+        if (list.getWp_no().trim().length() != 0){
+            holder.imagewp.setBackgroundResource( R.drawable.whatsapp_16 );
+        }
+
         holder.textwp.setOnClickListener ( new View.OnClickListener () {
             @Override
             public void onClick(View view) {
@@ -172,6 +180,7 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
 
 
         holder.textViewProjectName.setText( list.getFirmName() );
+        holder.textPersionName.setText( list.getPersionname() );
         holder.textMobile.setText( list.getMobile_no() );
         holder.textwp.setText( list.getWp_no() );
 
@@ -231,13 +240,16 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
 
     class UsersViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewProjectName ,First_letter ,textMobile,textwp;
+        TextView textViewProjectName ,First_letter ,textMobile,textwp,textPersionName;
         ShimmerFrameLayout shimmerFrameLayout;
-        ImageView savebutton;
+        ImageView savebutton,imagecontct,imagewp;
         public UsersViewHolder(View itemView) {
             super(itemView);
+            textPersionName = itemView.findViewById(R.id.textPersionName);
 //            shimmerFrameLayout = itemView.findViewById(R.id.shimmerFrameLayout);
             textViewProjectName = itemView.findViewById(R.id.textViewProjectName);
+            imagecontct = itemView.findViewById(R.id.imagecontct);
+            imagewp = itemView.findViewById(R.id.imagewp);
             textMobile = itemView.findViewById(R.id.textMobile);
             textwp = itemView.findViewById(R.id.textwp);
 

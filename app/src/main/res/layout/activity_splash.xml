@@ -4,16 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/whiteCardColor"
     tools:context=".Activity.SplashActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
+
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_gravity="center|center_horizontal"
-            android:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/cmslogo" />
 
     </LinearLayout>
+
 </LinearLayout>

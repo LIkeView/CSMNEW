@@ -73,6 +73,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp">
                         <TextView
+                            android:id="@+id/textPersionName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Persion Name"
@@ -90,9 +91,9 @@
 
                             android:layout_marginRight="10dp">
                             <ImageView
+                                android:id="@+id/imagecontct"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/phone_16"
                                 android:layout_marginRight="5dp"/>
                             <TextView
                                 android:id="@+id/textMobile"
@@ -108,9 +109,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                             <ImageView
+                                android:id="@+id/imagewp"
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/whatsapp_16"
                                 android:layout_marginRight="5dp"/>
                             <TextView
                                 android:id="@+id/textwp"
@@ -121,9 +123,7 @@
                                 android:textColor="@color/LightSlateGray"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
                         </LinearLayout>
-
                     </LinearLayout>
-
                 </LinearLayout>
 <LinearLayout
     android:layout_width="0dp"
@@ -137,7 +137,6 @@
         />
 </LinearLayout>
             </LinearLayout>
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -145,7 +144,6 @@
                 />
 
         </LinearLayout>
-
 
     </androidx.cardview.widget.CardView>
 

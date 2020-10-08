@@ -153,7 +153,7 @@ public class AllHomeTabFragment extends Fragment {
                     public void run() {
                         swipeHome.setRefreshing( false );
                     }
-                } ,400);
+                } ,100);
             }
         } );
 

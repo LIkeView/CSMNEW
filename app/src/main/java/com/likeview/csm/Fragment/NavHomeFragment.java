@@ -3,6 +3,7 @@ package com.likeview.csm.Fragment;
 import com.google.android.material.tabs.TabLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.navigation.NavigationView;
+import com.likeview.csm.Activity.LoginActivity;
 import com.likeview.csm.R;
 import com.likeview.csm.adapter.HomeAllTabAdapter;
 import com.likeview.csm.adapter.ViewPageAdapter;
@@ -145,11 +147,11 @@ public class NavHomeFragment extends Fragment implements NavigationView.OnNaviga
                 SharedPrefManager sfm = SharedPrefManager.getInstance(context);
                 sfm.clear();
 
-//                Intent i = new Intent( getActivity(), LoginActivity.class);
-//                i.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                i.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(i);
-//                break;
+                Intent i = new Intent( getActivity(), LoginActivity.class);
+                i.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                break;
         }
 
         drawerLayout.closeDrawer( GravityCompat.START );
