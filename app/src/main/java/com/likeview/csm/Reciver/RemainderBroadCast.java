@@ -11,6 +11,7 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
 import com.likeview.csm.Activity.ClientDetailActivity;
+import com.likeview.csm.R;
 
 public class RemainderBroadCast extends BroadcastReceiver {
 
@@ -38,7 +39,7 @@ public class RemainderBroadCast extends BroadcastReceiver {
 
         // Prepare Notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, Channelid)
-                .setSmallIcon(android.R.drawable.ic_dialog_info)
+                .setSmallIcon( R.drawable.cmslogo)
                 .setContentTitle("CMS")
                 .setContentText("Hello")
                 .setContentIntent(contentIntent)

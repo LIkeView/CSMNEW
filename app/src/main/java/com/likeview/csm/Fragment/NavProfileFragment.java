@@ -30,11 +30,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.Model.ListClientModel;
+import com.likeview.csm.ApiResponse.Model.ProfileDetailModel;
 import com.likeview.csm.Connectivity.CheckNetwork;
 import com.likeview.csm.R;
 import com.likeview.csm.adapter.NavSaveAdapter;
 import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
+import com.likeview.csm.storage.SharedPrefManager;
 
 import java.util.ArrayList;
 
@@ -49,7 +51,8 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class NavProfileFragment extends Fragment {
-
+    Context context;
+    TextView textPersionName,textEmail,textPhone;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,8 +64,16 @@ public class NavProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated( view, savedInstanceState );
 
+        textPersionName = view.findViewById( R.id.textPersionName );
+        textEmail = view.findViewById( R.id.textEmail );
+        textPhone = view.findViewById( R.id.textPhone );
 
-
+        SharedPrefManager sfm = SharedPrefManager.getInstance( context );
+        ProfileDetailModel pd = sfm.getUser();
+        Log.d( "pd",""+pd.getName() );
+        textPersionName.setText( pd.getName() );
+        textEmail.setText( pd.getEmail() );
+        textPhone.setText( pd.getMobile() );
     }
 
 

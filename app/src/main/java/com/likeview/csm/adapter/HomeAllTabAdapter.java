@@ -116,6 +116,9 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra( clientDetailsModel.getClientId(), listEvents.get(position).getClientId());
                 intent.putExtra( "firm_name", listEvents.get(position).getFirmName());
+                intent.putExtra( "visiting_card_front", listEvents.get(position).getVisiting_card_front());
+                intent.putExtra( "visiting_card_back", listEvents.get(position).getVisiting_card_back());
+                intent.putExtra( "profile_pic", listEvents.get(position).getProfile_pic());
                 intent.putExtra( "personal_name", listEvents.get(position).getPersionname());
                 intent.putExtra( "address", listEvents.get(position).getAddress());
                 intent.putExtra( "wp_no", listEvents.get(position).getWp_no());

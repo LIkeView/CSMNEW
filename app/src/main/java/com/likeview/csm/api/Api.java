@@ -62,9 +62,12 @@ public interface Api {
     @POST("login")
     Call<ApiResponse> login(@Field("email_or_phones") String email, @Field("password") String password);
 
-
+    @FormUrlEncoded
     @POST("listAllclient")
-    Call<ApiResponse> getAllclientlists();
+    Call<ApiResponse> getAllclientlists(
+            @Field( "user_id" ) int userID
+
+    );
 
     @FormUrlEncoded
     @POST("saveCoustomer")
@@ -74,7 +77,8 @@ public interface Api {
     @FormUrlEncoded
     @POST("listClient")
     Call<ApiResponse> getlistclientlists(
-            @Field( "type_id" ) int typeId
+            @Field( "type_id" ) int typeId,
+            @Field( "user_id" ) int userID
     );
     @FormUrlEncoded
     @POST("detailClient")
@@ -89,6 +93,7 @@ public interface Api {
     @POST("addCoustomer")
     Call<ApiResponseWithoutResData> getAddCoustomer(
             @Field("type_id") String TypeId,
+            @Field("user_id") String user_id,
             @Field("firm_name") String firm_name,
             @Field("personal_name") String personal_name,
             @Field("address") String address,

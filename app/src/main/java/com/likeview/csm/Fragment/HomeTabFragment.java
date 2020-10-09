@@ -32,11 +32,13 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.Model.ListClientModel;
+import com.likeview.csm.ApiResponse.Model.ProfileDetailModel;
 import com.likeview.csm.Connectivity.CheckNetwork;
 import com.likeview.csm.R;
 import com.likeview.csm.adapter.HomeTabAdapter;
 import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
+import com.likeview.csm.storage.SharedPrefManager;
 
 import java.util.ArrayList;
 
@@ -170,8 +172,11 @@ public class HomeTabFragment extends Fragment {
 //        progress.setCancelable(false);
 //        progress.show();
 
+        SharedPrefManager sfm = SharedPrefManager.getInstance( context );
+        ProfileDetailModel pd = sfm.getUser();
+
         Api api = RetrofitClient.getApi().create(Api.class);
-        Call<ApiResponse> call = api.getlistclientlists(index);
+        Call<ApiResponse> call = api.getlistclientlists(index,pd.getUserId());
         call.enqueue( new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -188,17 +193,14 @@ public class HomeTabFragment extends Fragment {
                     mShimmerViewContainer.stopShimmer();
                     mShimmerViewContainer.setVisibility(View.GONE);
 //                    progress.dismiss();
-                    Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
                 }
 //                progress.dismiss();
 
             }
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Log.d("Zxcv",""+t.getLocalizedMessage());
-                Toast.makeText( getActivity(), "Client is not added", Toast.LENGTH_LONG ).show();
-//                progress.dismiss();
-
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
             }
         } );
 

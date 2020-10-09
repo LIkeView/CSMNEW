@@ -52,6 +52,7 @@ dependencies {
     implementation 'in.gauriinfotech:commons:1.0.8'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.facebook.shimmer:shimmer:0.4.0'
-
+    implementation 'com.hbb20:ccp:2.4.0'
+    implementation 'com.squareup.picasso:picasso:2.4.0'
 
 }

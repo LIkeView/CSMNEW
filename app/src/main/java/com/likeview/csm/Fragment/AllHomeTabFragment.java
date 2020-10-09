@@ -32,11 +32,13 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.Model.ListClientModel;
+import com.likeview.csm.ApiResponse.Model.ProfileDetailModel;
 import com.likeview.csm.Connectivity.CheckNetwork;
 import com.likeview.csm.R;
 import com.likeview.csm.adapter.HomeAllTabAdapter;
 import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
+import com.likeview.csm.storage.SharedPrefManager;
 
 import java.util.ArrayList;
 
@@ -166,9 +168,11 @@ public class AllHomeTabFragment extends Fragment {
 //        progress.setMessage("Wait while loading...");
 //        progress.setCancelable(false);
 //        progress.show();
+        SharedPrefManager sfm = SharedPrefManager.getInstance( context );
+        ProfileDetailModel pd = sfm.getUser();
 
         Api api = RetrofitClient.getApi().create(Api.class);
-        Call<ApiResponse> call = api.getAllclientlists();
+        Call<ApiResponse> call = api.getAllclientlists(pd.getUserId());
         call.enqueue( new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
@@ -177,13 +181,14 @@ public class AllHomeTabFragment extends Fragment {
                     subfilesWithUserDetailHistories = (ArrayList<ListClientModel>) response.body().getResData().getListClient();
                     homeAllTabAdapter = new HomeAllTabAdapter(getActivity(), subfilesWithUserDetailHistories);
                     rcvallSubFileList.setAdapter(homeAllTabAdapter);
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
                 }
                 else
                 {
                     mShimmerViewContainer.stopShimmer();
                     mShimmerViewContainer.setVisibility(View.GONE);
 //                    progress.dismiss();
-                    Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
                 }
 //                progress.dismiss();
 
@@ -193,7 +198,8 @@ public class AllHomeTabFragment extends Fragment {
                 Log.d("Z",""+t.getLocalizedMessage());
                 Toast.makeText( getActivity(), t.getLocalizedMessage(), Toast.LENGTH_LONG ).show();
 //                progress.dismiss();
-
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
             }
         } );
 

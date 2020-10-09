@@ -31,6 +31,7 @@ import com.likeview.csm.ApiResponse.Model.ClientDetailsModel;
 import com.likeview.csm.R;
 import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,7 +65,7 @@ private static final int REQUEST_PHONE_CALL = 1;
         setContentView( R.layout.activity_event_detail );
 
 //      find all field using findViewById
-
+        imgProjHome = findViewById( R.id.imgProjHome );
         textFirmName = findViewById( R.id.textFirmName);
         textPersionName = findViewById( R.id.textPersionName);
         textaddress = findViewById( R.id.textaddress);
@@ -92,6 +93,11 @@ private static final int REQUEST_PHONE_CALL = 1;
         ClientDetailsModel clientDetailsModel = new ClientDetailsModel();
         int clientID=getIntent().getIntExtra( clientDetailsModel.getClientId(),0);
         String FirmName = getIntent().getStringExtra( "firm_name");
+        String Visiting_card_front = getIntent().getStringExtra( "visiting_card_front");
+        String Visiting_card_back = getIntent().getStringExtra( "visiting_card_back");
+        String Profile_pic = getIntent().getStringExtra( "profile_pic");
+
+
         String PersionName = getIntent().getStringExtra( "personal_name");
         String Address1 = getIntent().getStringExtra( "address");
         String Whatsapp = getIntent().getStringExtra( "wp_no");
@@ -113,8 +119,10 @@ private static final int REQUEST_PHONE_CALL = 1;
         getSupportActionBar().setDisplayShowHomeEnabled( true );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
 
-        textFirmName.setText( FirmName );
 
+        textFirmName.setText( FirmName );
+        Picasso.with( getApplicationContext() ).load("http://cms.likeview.in/assets/photos/"+Visiting_card_front).fit().centerCrop().into( imgProjHome );
+        Log.d( "aaaaaa" ,""+Visiting_card_front);
         textPersionName.setText( PersionName );
         textaddress.setText( Address1 );
         textwp.setOnClickListener ( new View.OnClickListener () {

@@ -63,13 +63,16 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.hbb20.CountryCodePicker;
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.ApiResponseWithoutResData;
+import com.likeview.csm.ApiResponse.Model.ProfileDetailModel;
 import com.likeview.csm.MainActivity;
 import com.likeview.csm.R;
 import com.likeview.csm.Reciver.RemainderBroadCast;
 import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
+import com.likeview.csm.storage.SharedPrefManager;
 import com.likeview.csm.utils.FileUtil;
 import com.likeview.csm.utils.FileUtilsNew;
 
@@ -128,6 +131,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     public static final int BITMAP_SAMPLE_SIZE = 8;
     Spinner spStateAddUser;
     TextInputLayout datelayout;
+    CountryCodePicker codeMobile,codewp;
     private SimpleDateFormat dateFormatter;
     private DatePickerDialog DatePickerDialog;
     String spid;
@@ -154,8 +158,8 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         toolbar=  view.findViewById(R.id.toolbar);
         toolbartext=  view.findViewById(R.id.toolbartext);
         toolbartext.setText( "Add Coustomer" );
-
-
+        codeMobile = view.findViewById(R.id.codeMobile);
+        codewp = view.findViewById(R.id.codewp);
         imgprofilePic= view.findViewById(R.id.imgprofilePic);
         editTextFirmName = view.findViewById(R.id.editTextFirmName);
         editTextPersionName = view.findViewById(R.id.editTextPersionName);
@@ -186,6 +190,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         datepick = view.findViewById(R.id.datepicker);
         datepick.setInputType(InputType.TYPE_NULL);
         datelayout = view.findViewById(R.id.datlayout);
+
         Log.d( "Dk::3", "Hello" );
         mViewFlipper =  view.findViewById(R.id.viewFlipper);
         flipper();
@@ -277,6 +282,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
 
 //        String email = editTextEmail.getText().toString().trim();
 //        String Name = "Darshan Kasundra";
+
         String FirmName = editTextFirmName.getText().toString().trim();
         String PersionName = editTextPersionName.getText().toString().trim();
         String AddressLine1 = editTextAddressLine1.getText().toString().trim();
@@ -336,9 +342,10 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
 //            editTextPassword.requestFocus();
 //            return;
 //        }
-
+        SharedPrefManager sfm = SharedPrefManager.getInstance( context );
+        ProfileDetailModel pd = sfm.getUser();
         Api api = RetrofitClient.getApi().create( Api.class );
-        Call<ApiResponseWithoutResData> call = api.getAddCoustomer( spid,FirmName,PersionName,AddressLine1,City,State,Country,Email,Website,Mobile,Whatsap,TilesSize,
+        Call<ApiResponseWithoutResData> call = api.getAddCoustomer( spid, String.valueOf( pd.getUserId() ),FirmName,PersionName,AddressLine1,City,State,Country,Email,Website,Mobile,Whatsap,TilesSize,
                 Quantity,PaymentType,CreditTime,DealingWith,DealingFirm,DealingSince,NotifactionDate,Communication);
 
 

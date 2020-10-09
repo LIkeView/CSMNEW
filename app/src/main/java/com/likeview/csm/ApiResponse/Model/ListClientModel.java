@@ -10,6 +10,15 @@ public class ListClientModel {
     @SerializedName("type_id")
     @Expose
     private String typeId;
+    @SerializedName("visiting_card_front")
+    @Expose
+    private String visiting_card_front;
+    @SerializedName("visiting_card_back")
+    @Expose
+    private String visiting_card_back;
+    @SerializedName("profile_pic")
+    @Expose
+    private String profile_pic;
     @SerializedName("firm_name")
     @Expose
     private String firmName;
@@ -96,6 +105,30 @@ public class ListClientModel {
 
     public void setTypeId(String typeId) {
         this.typeId = typeId;
+    }
+
+    public String getVisiting_card_front() {
+        return visiting_card_front;
+    }
+
+    public void setVisiting_card_front(String visiting_card_front) {
+        this.visiting_card_front = visiting_card_front;
+    }
+
+    public String getVisiting_card_back() {
+        return visiting_card_back;
+    }
+
+    public void setVisiting_card_back(String visiting_card_back) {
+        this.visiting_card_back = visiting_card_back;
+    }
+
+    public String getProfile_pic() {
+        return profile_pic;
+    }
+
+    public void setProfile_pic(String profile_pic) {
+        this.profile_pic = profile_pic;
     }
 
     public String getFirmName() {
