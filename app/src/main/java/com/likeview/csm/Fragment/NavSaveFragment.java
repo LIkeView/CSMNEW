@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.likeview.csm.ApiResponse.ApiResponse;
@@ -70,6 +71,7 @@ public class NavSaveFragment extends Fragment {
     LinearLayoutManager manager;
     Boolean isScrolling = false;
     int currentItems, totalItems, scrollOutItems;
+    private ShimmerFrameLayout mShimmerViewContainer;
 //    SharedPrefManager sfm = SharedPrefManager.getInstance(getActivity());
 //    ProfileDetail pd = sfm.getUser();
 
@@ -88,6 +90,8 @@ public class NavSaveFragment extends Fragment {
         toolbar = view.findViewById( R.id.toolbar );
         rcvallSubFileList = view.findViewById( R.id.rcvallSubFileList );
         navUserName  = view.findViewById( R.id.navUserName );
+        mShimmerViewContainer = view.findViewById(R.id.shimmer_view_container_save);
+
 
         manager = new LinearLayoutManager( getActivity() );
         rcvallSubFileList.setLayoutManager( manager );
@@ -166,11 +170,11 @@ public class NavSaveFragment extends Fragment {
 
     }
     void getData(){
-        ProgressDialog progress = new ProgressDialog( getActivity() );
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false);
-        progress.show();
+//        ProgressDialog progress = new ProgressDialog( getActivity() );
+//        progress.setTitle("Loading");
+//        progress.setMessage("Wait while loading...");
+//        progress.setCancelable(false);
+//        progress.show();
 
         Api api = RetrofitClient.getApi().create(Api.class);
         Call<ApiResponse> call = api.getsaveclientlists();
@@ -178,13 +182,17 @@ public class NavSaveFragment extends Fragment {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.body().getResCode() == 1) {
-                    progress.dismiss();
+//                    progress.dismiss();
                     ArrayList<ListClientModel> subfilesWithUserDetailHistories = (ArrayList<ListClientModel>) response.body().getResData().getListClient();
                     rcvallSubFileList.setAdapter(new NavSaveAdapter(getActivity(), subfilesWithUserDetailHistories));
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
                 }
                 else
                 {
-                    progress.dismiss();
+                    mShimmerViewContainer.stopShimmer();
+                    mShimmerViewContainer.setVisibility(View.GONE);
+//                    progress.dismiss();
                     Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_SHORT).show();
                 }
 //                progress.dismiss();
@@ -194,11 +202,24 @@ public class NavSaveFragment extends Fragment {
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Log.d("Z",""+t.getLocalizedMessage());
                 Toast.makeText( getActivity(), t.getLocalizedMessage(), Toast.LENGTH_LONG ).show();
-                progress.dismiss();
+//                progress.dismiss();
+                mShimmerViewContainer.stopShimmer();
+                mShimmerViewContainer.setVisibility(View.GONE);
 
             }
         } );
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mShimmerViewContainer.startShimmer();
+    }
+
+    @Override
+    public void onPause() {
+        mShimmerViewContainer.stopShimmer();
+        super.onPause();
     }
 
 }

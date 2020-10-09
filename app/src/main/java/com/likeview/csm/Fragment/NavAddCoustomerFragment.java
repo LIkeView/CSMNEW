@@ -31,6 +31,7 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Patterns;
+import android.util.SparseArray;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -58,6 +59,9 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.text.TextBlock;
+import com.google.android.gms.vision.text.TextRecognizer;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -87,6 +91,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
@@ -136,6 +142,8 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     private DatePickerDialog DatePickerDialog;
     String spid;
     Bitmap imageBitmap;
+    final String NAME_REGEX = "^([A-Z]([a-z]*|\\.) *){1,2}([A-Z][a-z]+-?)+$";
+
 
     CardView viewVisitingCard;
 //    SharedPrefManager sfm = SharedPrefManager.getInstance(getActivity());
@@ -291,8 +299,8 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         String State = editTextState.getText().toString().trim();
         String Country = editTextCountry.getText().toString().trim();
         String Email = editTextEmail.getText().toString().trim();
-        String Mobile = editTextMobile.getText().toString().trim();
-        String Whatsap = editTextWhatsap.getText().toString().trim();
+        String Mobile = codeMobile.getSelectedCountryCode()+editTextMobile.getText().toString().trim();
+        String Whatsap = codewp.getSelectedCountryCode()+editTextWhatsap.getText().toString().trim();
         String Website = editTextWebsite.getText().toString().trim();
         String TilesSize = editTextTilesSize.getText().toString().trim();
         String Quantity = editTextQuantity.getText().toString().trim();
@@ -396,6 +404,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                     myList.add(imageBitmap);
                     flipper();
                     chooseLogoimage.setImageBitmap( imageBitmap );
+                    ocr();
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
                             + File.separator
@@ -433,6 +442,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                     myList.add(thumbnail);
                     flipper();
                     chooseLogoimage.setImageBitmap( thumbnail );
+                    ocr();
                 }
             if (requestCode == 3) {
                 File f = new File(Environment.getExternalStorageDirectory().toString());
@@ -748,5 +758,136 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         }
 
     }
+    private void ocr() {
+        TextRecognizer textRecognizer = new TextRecognizer.Builder(getActivity().getApplicationContext()).build();
+
+        if(!textRecognizer.isOperational()){
+            Toast.makeText(getContext(), "Could not get the Text", Toast.LENGTH_SHORT).show();
+        }
+
+        else{
+            Frame frame = new Frame.Builder().setBitmap(myList.get(0)).build();
+
+            final SparseArray<TextBlock> items = textRecognizer.detect(frame);
+
+            StringBuilder sb = new StringBuilder();
+
+            for(int i=items.size()-1;i>=0;i--){
+                final TextBlock myitems = items.valueAt(i);
+                sb.append(myitems.getValue());
+                sb.append("\n");
+
+                Pattern name = Pattern.compile(String.valueOf(NAME_REGEX), Pattern.MULTILINE);
+                Matcher mname =  name.matcher(myitems.getValue());
+
+                Pattern phonenum = Pattern.compile(String.valueOf(Patterns.PHONE),Pattern.MULTILINE);
+                Matcher mphonenum = phonenum.matcher(myitems.getValue().trim());
+
+                Pattern email = Pattern.compile(String.valueOf(Patterns.EMAIL_ADDRESS), Pattern.MULTILINE);
+                Matcher memail = email.matcher(myitems.getValue());
+
+                Pattern website = Pattern.compile(String.valueOf(Patterns.WEB_URL), Pattern.MULTILINE);
+                Matcher mwebsite = website.matcher(myitems.getValue());
+
+
+                if(i==0 || i>0) {
+                    if (mname.find()) {
+//                        Toast.makeText(getContext(), "Match", Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+//                adb.setView(alertDialogView);
+                        adb.setTitle("Is "+ mname.group() + " name?" );
+                        adb.setIcon(android.R.drawable.ic_dialog_alert);
+                        final int finalI = i;
+                        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                editTextPersionName.setText(mname.group());
+//                        EditText et = (EditText)alertDialogView.findViewById(R.id.EditText1);
+//                                        Toast.makeText(getContext(),""+myitems.getValue(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        adb.show();
+
+                    }
+                    if (mphonenum.find()) {
+//                        Toast.makeText(getContext(), "Match", Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+//                adb.setView(alertDialogView);
+                        Log.d("ab",mphonenum.group());
+                        adb.setTitle("Is " + mphonenum.group() + " phoneNumber?");
+                        adb.setIcon(android.R.drawable.ic_dialog_alert);
+                        final int finalI = i;
+                        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                editTextMobile.setText(mphonenum.group());
+//                        EditText et = (EditText)alertDialogView.findViewById(R.id.EditText1);
+//                                        Toast.makeText(MainActivity.this,""+finalI, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        adb.show();
+
+                    }
+                    if (memail.find()) {
+                        Toast.makeText(getContext(), "Match", Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+//                adb.setView(alertDialogView);
+                        Log.d("ab",memail.group());
+                        adb.setTitle("Is " + memail.group() + " email?");
+                        adb.setIcon(android.R.drawable.ic_dialog_alert);
+                        final int finalI = i;
+                        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                editTextEmail.setText(memail.group());
+//                        EditText et = (EditText)alertDialogView.findViewById(R.id.EditText1);
+//                                        Toast.makeText(MainActivity.this,""+finalI, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        adb.show();
+
+                    }
+                    if (mwebsite.find()) {
+                        Toast.makeText(getContext(), "Match", Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+//                adb.setView(alertDialogView);
+                        Log.d("ab",mwebsite.group());
+                        adb.setTitle("Is " + mwebsite.group() + " website?");
+                        adb.setIcon(android.R.drawable.ic_dialog_alert);
+                        final int finalI = i;
+                        adb.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                editTextWebsite.setText(mwebsite.group());
+//                        EditText et = (EditText)alertDialogView.findViewById(R.id.EditText1);
+//                                        Toast.makeText(MainActivity.this,""+finalI, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        adb.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        adb.show();
+
+                    }
+
+                }
+            }
+
+        }
+    }
+
 
 }
