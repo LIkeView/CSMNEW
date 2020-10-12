@@ -24,6 +24,7 @@ import com.likeview.csm.Activity.ClientDetailActivity;
 import com.likeview.csm.ApiResponse.ApiResponseWithoutResData;
 import com.likeview.csm.ApiResponse.Model.ClientDetailsModel;
 import com.likeview.csm.ApiResponse.Model.ListClientModel;
+import com.likeview.csm.Fragment.NavAddCoustomerFragment;
 import com.likeview.csm.R;
 import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
@@ -108,6 +109,7 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
         } );
 
 
+
         holder.itemView.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +134,7 @@ public class HomeAllTabAdapter extends RecyclerView.Adapter<HomeAllTabAdapter.Us
                 context.startActivity(intent);
             }
         } );
+
         Log.d( "save",""+list.getIs_saved() );
         if (list.getIs_saved() == "yes"){
             holder.savebutton.setBackgroundResource( ic_baseline_favorite_24 );

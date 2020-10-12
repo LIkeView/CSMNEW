@@ -2,6 +2,7 @@ package com.likeview.csm.Activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -22,12 +23,14 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.Model.ClientDetailsModel;
+import com.likeview.csm.Fragment.NavAddCoustomerFragment;
 import com.likeview.csm.R;
 import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
@@ -51,8 +54,9 @@ private static final int REQUEST_PHONE_CALL = 1;
 
     RecyclerView rcvEventDetail , rcvUserEventDetail ;
     Context context;
+
 //    Button btnJoin;
-    TextView textFirmName,textPersionName,textaddress,textwp,textMobile,textEmail ,textWebsite,textSize,textQty,textPaymentType;
+    TextView textFirmName,textPersionName,textaddress,textwp,textMobile,textEmail ,textWebsite,textSize,textQty,textPaymentType,toolbartextedit;
     LinearLayout linearlayoutvotebutton,linearlayoutDescrotion;
     ImageView imgProjHome ,backButton ;
 
@@ -76,6 +80,7 @@ private static final int REQUEST_PHONE_CALL = 1;
         textSize = findViewById( R.id.textSize);
         textQty = findViewById( R.id.textQty);
         textPaymentType = findViewById( R.id.textPaymentType);
+        toolbartextedit=findViewById(R.id.toolbartextedit);
         initReference();
     }
     void initReference( ){
@@ -96,8 +101,6 @@ private static final int REQUEST_PHONE_CALL = 1;
         String Visiting_card_front = getIntent().getStringExtra( "visiting_card_front");
         String Visiting_card_back = getIntent().getStringExtra( "visiting_card_back");
         String Profile_pic = getIntent().getStringExtra( "profile_pic");
-
-
         String PersionName = getIntent().getStringExtra( "personal_name");
         String Address1 = getIntent().getStringExtra( "address");
         String Whatsapp = getIntent().getStringExtra( "wp_no");
@@ -161,6 +164,29 @@ private static final int REQUEST_PHONE_CALL = 1;
         textSize.setText( Size );
         textQty.setText( Qnty );
         textPaymentType.setText( PaymentType );
+        toolbartextedit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClientDetailsModel clientDetailsModel = new ClientDetailsModel();
+                Intent intent = new Intent(ClientDetailActivity.this,editnew.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                intent.putExtra(clientDetailsModel.getClientId(),clientID);
+                intent.putExtra( "firm_name", FirmName);
+                intent.putExtra( "visiting_card_front",Visiting_card_front);
+                intent.putExtra( "visiting_card_back",Visiting_card_back);
+                intent.putExtra( "profile_pic", Profile_pic);
+                intent.putExtra( "personal_name", PersionName);
+                intent.putExtra( "address", Address1);
+                intent.putExtra( "wp_no", Whatsapp);
+                intent.putExtra( "mobile_no", Mobile);
+                intent.putExtra( "email",Email);
+                intent.putExtra( "website", Website);
+                intent.putExtra( "req_size", Size);
+                intent.putExtra( "qty", Qnty);
+                intent.putExtra( "payment_type", PaymentType);
+            }
+        });
 
     }
 

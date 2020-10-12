@@ -221,7 +221,12 @@ public class HomeTabFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                homeTabAdapter.getFilter().filter(s);
+                try {
+                    homeTabAdapter.getFilter().filter(s);
+                }
+                catch (Exception e){
+//                    Toast.makeText(getContext(), "not found", Toast.LENGTH_SHORT).show();
+                }
                 return false;
             }
         });

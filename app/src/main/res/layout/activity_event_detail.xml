@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@drawable/home_shape_bk"
     style="@style/loginParent">
+
     <RelativeLayout
         android:gravity="center"
         style="@style/Style_toolbar_relativeLayout">
@@ -43,7 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|right"
-                    android:id="@+id/toolbartextjoin"
+                    android:id="@+id/toolbartextedit"
                     android:textStyle="bold"
                     android:text="Edit"
                     android:textColor="@color/White"
@@ -54,7 +56,11 @@
         </androidx.appcompat.widget.Toolbar>
     </RelativeLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <LinearLayout style="@style/Style_event_detail_LinearLayout">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -550,4 +556,5 @@
                 </LinearLayout>
 
         </LinearLayout>
-</LinearLayout>
+    </ScrollView>
+=</LinearLayout>
