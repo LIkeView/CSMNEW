@@ -292,7 +292,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         String Country = editTextCountry.getText().toString().trim();
         String Email = editTextEmail.getText().toString().trim();
         String Mobile = editTextMobile.getText().toString().trim();
-        String Whatsap = editTextWhatsap.getText().toString().trim();
+        String Whatsap =codewp.getSelectedCountryCode()+ editTextWhatsap.getText().toString().trim();
         String Website = editTextWebsite.getText().toString().trim();
         String TilesSize = editTextTilesSize.getText().toString().trim();
         String Quantity = editTextQuantity.getText().toString().trim();
@@ -588,12 +588,13 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         switch (view.getId()) {
             case R.id.btnSubmit:
                 userLogin();
-                new Handler().postDelayed( new Runnable() {
-                    @Override
-                    public void run() {
-                        imageupload();
-                    }
-                },2000);
+                imageupload();
+//                new Handler().postDelayed( new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        imageupload();
+//                    }
+//                },2000);
                 setNotification();
                 break;
             case R.id.chooseLogo:
@@ -615,6 +616,17 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     private void imageupload() {
         RequestBody requestBodyClientID = RequestBody.create( MediaType.parse( "multipart/form-data" ), String.valueOf(2));
 //        RequestBody requestBodyeventid = RequestBody.create( MediaType.parse( "multipart/form-data" ), String.valueOf( 10 ) );
+
+//        if(myList.size()==0){
+//
+//        }
+//        else if(myList.size()==1){
+//            moveimagefront=getImageUri( getContext(),myList.get(0) );
+//        }
+//        else {
+//            moveimagefront=getImageUri( getContext(),myList.get(0) );
+//            moveimageback=getImageUri( getContext(),myList.get(1) );
+//        }
         moveimagefront=getImageUri( getContext(),myList.get(0) );
         moveimageback=getImageUri( getContext(),myList.get(1) );
         BitmapDrawable drawable = (BitmapDrawable) imgprofilePic.getDrawable();
