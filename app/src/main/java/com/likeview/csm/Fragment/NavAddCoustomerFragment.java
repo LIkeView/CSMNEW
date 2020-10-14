@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -121,8 +122,8 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     Toolbar toolbar;
     Context context;
     Bitmap bitmap;
-    Uri moveimagefront,moveimageback,moveimageprofile;
-    ImageView chooseLogoimage,imgprofilePic;
+    Uri moveimagefront,moveimageback,moveimageprofile ;
+    ImageView chooseLogoimage,imgprofilePic = null;
     MultipartBody.Part imagepartfront,imagepartback,imagepartprofile;
     FloatingActionButton chooseLogo;
     ArrayList<Bitmap> myList = new ArrayList<Bitmap>();
@@ -190,6 +191,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         datepick = view.findViewById(R.id.datepicker);
         datepick.setInputType(InputType.TYPE_NULL);
         datelayout = view.findViewById(R.id.datlayout);
+        imgprofilePic.setTag(R.drawable.ic_menu_camera);
 
         Log.d( "Dk::3", "Hello" );
         mViewFlipper =  view.findViewById(R.id.viewFlipper);
@@ -616,22 +618,41 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     private void imageupload() {
         RequestBody requestBodyClientID = RequestBody.create( MediaType.parse( "multipart/form-data" ), String.valueOf(2));
 //        RequestBody requestBodyeventid = RequestBody.create( MediaType.parse( "multipart/form-data" ), String.valueOf( 10 ) );
+        Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.cmslogo);
+        if(myList.size()==0){
+            moveimagefront=getImageUri(getContext(),icon);
+            moveimageback=getImageUri(getContext(),icon);
 
-//        if(myList.size()==0){
-//
-//        }
-//        else if(myList.size()==1){
-//            moveimagefront=getImageUri( getContext(),myList.get(0) );
-//        }
-//        else {
-//            moveimagefront=getImageUri( getContext(),myList.get(0) );
-//            moveimageback=getImageUri( getContext(),myList.get(1) );
-//        }
-        moveimagefront=getImageUri( getContext(),myList.get(0) );
-        moveimageback=getImageUri( getContext(),myList.get(1) );
-        BitmapDrawable drawable = (BitmapDrawable) imgprofilePic.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-        moveimageprofile=getImageUri( getContext(),bitmap );
+        }
+        else if(myList.size()==1){
+            moveimagefront=getImageUri( getContext(),myList.get(0) );
+            moveimageback=getImageUri(getContext(),icon);
+        }
+        else {
+            moveimagefront=getImageUri( getContext(),myList.get(0) );
+            moveimageback=getImageUri( getContext(),myList.get(1) );
+        }
+
+        Log.d("hiral", String.valueOf(imgprofilePic));
+//        BitmapDrawable drawable = (BitmapDrawable) imgprofilePic.getDrawable();
+        if((int)imgprofilePic.getTag() == R.drawable.ic_menu_camera){
+            moveimageprofile=getImageUri(getContext(),icon);
+        }
+        else {
+//            Log.d("budhivagarni::",""+imgprofilePic);
+            BitmapDrawable drawable = (BitmapDrawable) imgprofilePic.getDrawable();
+//        Bitmap bitmap = drawable.getBitmap();
+            Bitmap bitmap = Bitmap.createBitmap( drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888 );
+            Canvas canvas = new Canvas( bitmap );
+            drawable.setBounds( 0, 0, canvas.getWidth(), canvas.getHeight() );
+            drawable.draw( canvas );
+            moveimageprofile = getImageUri( getContext(), bitmap );
+        }
+//        moveimagefront=getImageUri( getContext(),myList.get(0) );
+//        moveimageback=getImageUri( getContext(),myList.get(1) );
+//        BitmapDrawable drawable = (BitmapDrawable) imgprofilePic.getDrawable();
+//        Bitmap bitmap = drawable.getBitmap();
+//        moveimageprofile=getImageUri( getContext(),bitmap );
         File filefront = new File( FileUtil.getPath( moveimagefront, getContext() ) );
         File fileback = new File( FileUtil.getPath( moveimageback, getContext() ) );
         File fileprofile = new File( FileUtil.getPath( moveimageprofile, getContext() ) );
@@ -643,8 +664,12 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         RequestBody requestBodyBack = RequestBody.create( MediaType.parse( "image/*" ), fileback );
         imagepartback = MultipartBody.Part.createFormData( "visiting_card_back", fileback.getName(),requestBodyBack  );
 //
+        String abc = null ;
         RequestBody requestBodyProfile = RequestBody.create( MediaType.parse( "image/*" ), fileprofile );
-        imagepartprofile = MultipartBody.Part.createFormData( "profile_pic", fileprofile.getName(),requestBodyProfile);
+
+        abc = fileprofile.getName();
+
+        imagepartprofile = MultipartBody.Part.createFormData( "profile_pic", abc,requestBodyProfile);
 
 //        RequestBody requestBodymainFile = RequestBody.create( MediaType.parse( "*/*" ), filemain_file );
 //        filePart = MultipartBody.Part.createFormData( "main_file", filemain_file.getName(), requestBodymainFile );
