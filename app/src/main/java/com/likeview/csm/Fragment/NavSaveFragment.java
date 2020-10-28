@@ -33,11 +33,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.likeview.csm.ApiResponse.ApiResponse;
 import com.likeview.csm.ApiResponse.Model.ListClientModel;
+import com.likeview.csm.ApiResponse.Model.ProfileDetailModel;
 import com.likeview.csm.Connectivity.CheckNetwork;
 import com.likeview.csm.R;
 import com.likeview.csm.adapter.NavSaveAdapter;
 import com.likeview.csm.api.Api;
 import com.likeview.csm.api.RetrofitClient;
+import com.likeview.csm.storage.SharedPrefManager;
 
 import java.util.ArrayList;
 
@@ -175,9 +177,10 @@ public class NavSaveFragment extends Fragment {
 //        progress.setMessage("Wait while loading...");
 //        progress.setCancelable(false);
 //        progress.show();
-
+        SharedPrefManager sfm = SharedPrefManager.getInstance( context );
+        ProfileDetailModel pd = sfm.getUser();
         Api api = RetrofitClient.getApi().create(Api.class);
-        Call<ApiResponse> call = api.getsaveclientlists();
+        Call<ApiResponse> call = api.getsaveclientlists( String.valueOf( pd.getUserId() ) );
         call.enqueue( new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {

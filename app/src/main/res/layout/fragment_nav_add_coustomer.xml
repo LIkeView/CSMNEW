@@ -27,8 +27,8 @@
             android:id="@+id/imgprofilePic"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_10"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/ic_menu_camera"
             app:itemIconTint="#ffffff"
             android:layout_alignParentLeft="true"/>
@@ -672,7 +672,7 @@
                             style="@style/modifiedEditText"
                             android:inputType="text"
                             android:maxLines="1"
-                            android:hint="Dealing Firm"/>
+                            android:hint="Remainder"/>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -722,17 +722,21 @@
         card_view:cardElevation="3dp"
         android:layout_margin="10dp"
         android:padding="10dp"
-        android:layout_width="match_parent"
+                android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        card_view:cardCornerRadius="@dimen/dimen_5"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center">
             <Button
                 android:id="@+id/btnSubmit"
+                android:background="@drawable/gradientbackground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/whiteCardColor"
                 android:text="Submit"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

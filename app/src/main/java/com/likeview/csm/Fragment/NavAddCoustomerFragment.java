@@ -108,7 +108,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class NavAddCoustomerFragment extends Fragment implements View.OnClickListener,View.OnTouchListener{
     TextView textUserName ,textPhoneNumber,textEmail,textCity,textState,textCountry,textPincode;
     EditText editTextFirmName,editTextPersionName,editTextAddressLine1,editTextAddressLine2,editTextCity,editTextState,editTextCountry;
-//    TextInputEditText ;
+    //    TextInputEditText ;
     EditText editTextEmail,editTextMobile,editTextWhatsap,editTextWebsite  ,editTextTilesSize,editTextQuantity,editTextPaymentType,editTextCreditTime,editTextDealingWith,editTextDealingFirm,editTextDealingSince,editTextCommunication,datepick;
     String NotifactionDate = "";
     CheckBox checkboxwp;
@@ -254,7 +254,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // TODO Auto-generated method stub
-                
+
             }
         });
 
@@ -280,10 +280,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         return sdf.format(cal.getTime());
     }
 
-    private void userLogin() {
-
-//        String email = editTextEmail.getText().toString().trim();
-//        String Name = "Darshan Kasundra";
+    private void AddCoustomer() {
 
         String FirmName = editTextFirmName.getText().toString().trim();
         String PersionName = editTextPersionName.getText().toString().trim();
@@ -311,9 +308,6 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         editor.putString("value", FirmName);
         editor.apply();
 
-
-
-
         if (FirmName.isEmpty()) {
             editTextFirmName.setError( "Firm Name is required" );
             editTextFirmName.requestFocus();
@@ -337,18 +331,111 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
             return;
         }
 
-
-//
-//        if (password.length() < 8) {
-//            editTextPassword.setError( "Password should be atleast 8 character long" );
-//            editTextPassword.requestFocus();
-//            return;
-//        }
         SharedPrefManager sfm = SharedPrefManager.getInstance( context );
         ProfileDetailModel pd = sfm.getUser();
         Api api = RetrofitClient.getApi().create( Api.class );
-        Call<ApiResponseWithoutResData> call = api.getAddCoustomer( spid, String.valueOf( pd.getUserId() ),FirmName,PersionName,AddressLine1,City,State,Country,Email,Website,Mobile,Whatsap,TilesSize,
-                Quantity,PaymentType,CreditTime,DealingWith,DealingFirm,DealingSince,NotifactionDate,Communication);
+        RequestBody requestBodyspid = RequestBody.create( MediaType.parse( "multipart/form-data" ), spid);
+        RequestBody requestBodyUserID = RequestBody.create( MediaType.parse( "multipart/form-data" ), String.valueOf( pd.getUserId() ));
+        RequestBody requestBodyFirmName = RequestBody.create( MediaType.parse( "multipart/form-data" ), FirmName);
+        RequestBody requestBodyPersionName = RequestBody.create( MediaType.parse( "multipart/form-data" ), PersionName);
+        RequestBody requestBodyAddressLine1 = RequestBody.create( MediaType.parse( "multipart/form-data" ), AddressLine1);
+        RequestBody requestBodyCity = RequestBody.create( MediaType.parse( "multipart/form-data" ), City);
+        RequestBody requestBodyState = RequestBody.create( MediaType.parse( "multipart/form-data" ), State);
+        RequestBody requestBodyCountry = RequestBody.create( MediaType.parse( "multipart/form-data" ), Country);
+        RequestBody requestBodyEmail = RequestBody.create( MediaType.parse( "multipart/form-data" ), Email);
+        RequestBody requestBodyWebsite = RequestBody.create( MediaType.parse( "multipart/form-data" ), Website);
+        RequestBody requestBodyMobile = RequestBody.create( MediaType.parse( "multipart/form-data" ), Mobile);
+        RequestBody requestBodyWhatsap = RequestBody.create( MediaType.parse( "multipart/form-data" ), Whatsap);
+        RequestBody requestBodyTilesSize = RequestBody.create( MediaType.parse( "multipart/form-data" ), TilesSize);
+        RequestBody requestBodyQuantity = RequestBody.create( MediaType.parse( "multipart/form-data" ), Quantity);
+        RequestBody requestBodyPaymentType = RequestBody.create( MediaType.parse( "multipart/form-data" ), PaymentType);
+        RequestBody requestBodyCreditTime = RequestBody.create( MediaType.parse( "multipart/form-data" ), CreditTime);
+        RequestBody requestBodyDealingWith = RequestBody.create( MediaType.parse( "multipart/form-data" ), DealingWith);
+        RequestBody requestBodyDealingFirm = RequestBody.create( MediaType.parse( "multipart/form-data" ), DealingFirm);
+        RequestBody requestBodyDealingSince = RequestBody.create( MediaType.parse( "multipart/form-data" ), DealingSince);
+        RequestBody requestBodyNotifactionDate = RequestBody.create( MediaType.parse( "multipart/form-data" ), NotifactionDate);
+        RequestBody requestBodyCommunication = RequestBody.create( MediaType.parse( "multipart/form-data" ), Communication);
+
+
+
+
+
+        Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.cmslogo);
+        Log.d( "check::100::",""+ myList.size());
+        if(myList.size()==0){
+            Log.d( "check::11::",""+ myList.size());
+            moveimagefront=getImageUri(getContext(),icon);
+            moveimageback=getImageUri(getContext(),icon);
+
+        }
+        if(myList.size()==1){
+            Log.d( "check::12::",""+ myList.size());
+            moveimagefront=getImageUri(getContext(),myList.get(0));
+            moveimageback=getImageUri(getContext(),icon);
+
+        }
+        else if(myList.size()==2){
+            Log.d( "check::13::",""+ myList.size());
+            moveimagefront=getImageUri( getContext(),myList.get(0) );
+            moveimageback=getImageUri(getContext(),myList.get(1) );
+        }
+
+
+//        else {
+//            moveimagefront=getImageUri( getContext(),myList.get(0) );
+//            moveimageback=getImageUri( getContext(),myList.get(1) );
+//        }
+
+        Log.d("hiral", String.valueOf(imgprofilePic));
+//        BitmapDrawable drawable = (BitmapDrawable) imgprofilePic.getDrawable();
+        if((int)imgprofilePic.getTag() == R.drawable.ic_menu_camera){
+            moveimageprofile=getImageUri(getContext(),icon);
+        }
+        else {
+//            Log.d("budhivagarni::",""+imgprofilePic);
+            BitmapDrawable drawable = (BitmapDrawable) imgprofilePic.getDrawable();
+//        Bitmap bitmap = drawable.getBitmap();
+            Bitmap bitmap = Bitmap.createBitmap( drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888 );
+            Canvas canvas = new Canvas( bitmap );
+            drawable.setBounds( 0, 0, canvas.getWidth(), canvas.getHeight() );
+            drawable.draw( canvas );
+            moveimageprofile = getImageUri( getContext(), bitmap );
+        }
+//        moveimagefront=getImageUri( getContext(),myList.get(0) );
+//        moveimageback=getImageUri( getContext(),myList.get(1) );
+//        BitmapDrawable drawable = (BitmapDrawable) imgprofilePic.getDrawable();
+//        Bitmap bitmap = drawable.getBitmap();
+//        moveimageprofile=getImageUri( getContext(),bitmap );
+        File filefront = new File( FileUtil.getPath( moveimagefront, getContext() ) );
+        File fileback = new File( FileUtil.getPath( moveimageback, getContext() ) );
+        File fileprofile = new File( FileUtil.getPath( moveimageprofile, getContext() ) );
+
+
+        RequestBody requestBodyFront = RequestBody.create( MediaType.parse( "image/*" ), filefront );
+        imagepartfront = MultipartBody.Part.createFormData( "visiting_card_front", filefront.getName(), requestBodyFront );
+
+        RequestBody requestBodyBack = RequestBody.create( MediaType.parse( "image/*" ), fileback );
+        imagepartback = MultipartBody.Part.createFormData( "visiting_card_back", fileback.getName(),requestBodyBack  );
+//
+        String abc = null ;
+        RequestBody requestBodyProfile = RequestBody.create( MediaType.parse( "image/*" ), fileprofile );
+
+        abc = fileprofile.getName();
+
+        imagepartprofile = MultipartBody.Part.createFormData( "profile_pic", abc,requestBodyProfile);
+
+//        RequestBody requestBodymainFile = RequestBody.create( MediaType.parse( "*/*" ), filemain_file );
+//        filePart = MultipartBody.Part.createFormData( "main_file", filemain_file.getName(), requestBodymainFile );
+
+
+
+        Call<ApiResponseWithoutResData> call = api.getAddCoustomer( requestBodyspid, requestBodyUserID,requestBodyFirmName,
+                requestBodyPersionName,requestBodyAddressLine1,requestBodyCity,requestBodyState,
+                requestBodyCountry,requestBodyEmail,requestBodyWebsite,requestBodyMobile,requestBodyWhatsap,
+                imagepartfront,imagepartback,imagepartprofile,
+                requestBodyTilesSize, requestBodyQuantity,requestBodyPaymentType,requestBodyCreditTime,
+                requestBodyDealingWith,requestBodyDealingFirm,requestBodyDealingSince,requestBodyNotifactionDate,
+                requestBodyCommunication);
 
 
         call.enqueue( new Callback<ApiResponseWithoutResData>() {
@@ -369,7 +456,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
             @Override
             public void onFailure(Call<ApiResponseWithoutResData> call, Throwable t) {
                 Log.d( "Login", "" + t.getLocalizedMessage() );
-                Toast.makeText( getActivity() , "Hello", Toast.LENGTH_LONG ).show();
+                Toast.makeText( getActivity() , "Error!!!!", Toast.LENGTH_LONG ).show();
             }
         } );
 
@@ -379,7 +466,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-                if (requestCode == PICK_IMAGE) {
+            if (requestCode == PICK_IMAGE) {
                 File f = new File(Environment.getExternalStorageDirectory().toString());
 //                    File pathnew = Environment.getExternalStoragePublicDirectory(
 //                            Environment.DIRECTORY_PICTURES);
@@ -421,7 +508,7 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                     e.printStackTrace();
                 }
             }
-                else if (requestCode == 2) {
+            else if (requestCode == 2) {
                 Uri selectedImage = data.getData();
                 String[] filePath = { MediaStore.Images.Media.DATA };
                 Cursor c = getActivity().getContentResolver().query(selectedImage,filePath, null, null, null);
@@ -432,10 +519,10 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
 //                Log.d("path of image from gallery......******************.........", picturePath+"");
 //                chooseLogo.setImageBitmap(thumbnail);
-                    myList.add(thumbnail);
-                    flipper();
-                    chooseLogoimage.setImageBitmap( thumbnail );
-                }
+                myList.add(thumbnail);
+                flipper();
+                chooseLogoimage.setImageBitmap( thumbnail );
+            }
             if (requestCode == 3) {
                 File f = new File(Environment.getExternalStorageDirectory().toString());
 //                    File pathnew = Environment.getExternalStoragePublicDirectory(
@@ -589,8 +676,8 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnSubmit:
-                userLogin();
-                imageupload();
+                AddCoustomer();
+//                imageupload();
 //                new Handler().postDelayed( new Runnable() {
 //                    @Override
 //                    public void run() {
@@ -611,27 +698,40 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "IMG_" + Calendar.getInstance().getTime(), null);
+
+//        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
 
     private void imageupload() {
-        RequestBody requestBodyClientID = RequestBody.create( MediaType.parse( "multipart/form-data" ), String.valueOf(2));
+        RequestBody requestBodyClientID = RequestBody.create( MediaType.parse( "multipart/form-data" ), String.valueOf(5));
 //        RequestBody requestBodyeventid = RequestBody.create( MediaType.parse( "multipart/form-data" ), String.valueOf( 10 ) );
         Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.cmslogo);
+        Log.d( "check::100::",""+ myList.size());
         if(myList.size()==0){
+            Log.d( "check::11::",""+ myList.size());
             moveimagefront=getImageUri(getContext(),icon);
             moveimageback=getImageUri(getContext(),icon);
 
         }
-        else if(myList.size()==1){
-            moveimagefront=getImageUri( getContext(),myList.get(0) );
+        if(myList.size()==1){
+            Log.d( "check::12::",""+ myList.size());
+            moveimagefront=getImageUri(getContext(),myList.get(0));
             moveimageback=getImageUri(getContext(),icon);
+
         }
-        else {
+        else if(myList.size()==2){
+            Log.d( "check::13::",""+ myList.size());
             moveimagefront=getImageUri( getContext(),myList.get(0) );
-            moveimageback=getImageUri( getContext(),myList.get(1) );
+            moveimageback=getImageUri(getContext(),myList.get(1) );
         }
+
+
+//        else {
+//            moveimagefront=getImageUri( getContext(),myList.get(0) );
+//            moveimageback=getImageUri( getContext(),myList.get(1) );
+//        }
 
         Log.d("hiral", String.valueOf(imgprofilePic));
 //        BitmapDrawable drawable = (BitmapDrawable) imgprofilePic.getDrawable();
@@ -730,10 +830,10 @@ public class NavAddCoustomerFragment extends Fragment implements View.OnClickLis
         cal.set(y,m,d,15,56);
 
         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                long timeAtButtonClick = System.currentTimeMillis();
-                long tenSecond = 1000*10;
+        long timeAtButtonClick = System.currentTimeMillis();
+        long tenSecond = 1000*10;
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeAtButtonClick+tenSecond,AlarmManager.INTERVAL_DAY,pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeAtButtonClick+tenSecond,AlarmManager.INTERVAL_DAY,pendingIntent);
     }
 
 

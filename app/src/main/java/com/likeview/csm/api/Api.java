@@ -85,35 +85,39 @@ public interface Api {
     Call<ApiResponse> getdetailClient(
             @Field( "client_id" ) int clientId
     );
-
-    @POST("savedClient")
-    Call<ApiResponse> getsaveclientlists();
-
     @FormUrlEncoded
+    @POST("savedClient")
+    Call<ApiResponse> getsaveclientlists(
+            @Field("user_id") String UserID
+    );
+
+    @Multipart
     @POST("addCoustomer")
     Call<ApiResponseWithoutResData> getAddCoustomer(
-            @Field("type_id") String TypeId,
-            @Field("user_id") String user_id,
-            @Field("firm_name") String firm_name,
-            @Field("personal_name") String personal_name,
-            @Field("address") String address,
-            @Field("city") String city,
-            @Field("state") String state,
-            @Field("country") String country,
-            @Field("email") String email,
-            @Field("website") String website,
-            @Field("mobile_no") String mobile_no,
-            @Field("wp_no") String wp_no,
-            @Field("req_size") String req_size,
-            @Field("qty") String qty,
-            @Field("payment_type") String payment_type,
-            @Field("credit_time") String credit_time,
-            @Field("dealing_with") String dealing_with,
-            @Field("dealing_firm") String dealing_firm,
-            @Field("dealing_since") String dealing_since,
-            @Field("notifaction_date") String notifaction_date,
-            @Field("communication") String communication
-
+            @Part("type_id") RequestBody TypeId,
+            @Part("user_id") RequestBody user_id,
+            @Part("firm_name") RequestBody firm_name,
+            @Part("personal_name") RequestBody personal_name,
+            @Part("address") RequestBody address,
+            @Part("city") RequestBody city,
+            @Part("state") RequestBody state,
+            @Part("country") RequestBody country,
+            @Part("email") RequestBody email,
+            @Part("website") RequestBody website,
+            @Part("mobile_no") RequestBody mobile_no,
+            @Part("wp_no") RequestBody wp_no,
+            @Part MultipartBody.Part visiting_card_front,
+            @Part MultipartBody.Part visiting_card_back,
+            @Part MultipartBody.Part profile_pic,
+            @Part("req_size") RequestBody req_size,
+            @Part("qty") RequestBody qty,
+            @Part("payment_type") RequestBody payment_type,
+            @Part("credit_time") RequestBody credit_time,
+            @Part("dealing_with") RequestBody dealing_with,
+            @Part("dealing_firm") RequestBody dealing_firm,
+            @Part("dealing_since") RequestBody dealing_since,
+            @Part("notifaction_date") RequestBody notifaction_date,
+            @Part("communication") RequestBody communication
     );
 
     @Multipart
