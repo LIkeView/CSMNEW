@@ -63,15 +63,16 @@
             android:layout_height="wrap_content">
             <ViewFlipper
                 android:id="@+id/viewFlipper"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="180dp"
                 android:visibility="invisible"
+                android:layout_gravity="center"
                 android:scaleType="fitCenter" />
             <ImageView
                 android:id="@+id/chooseLogoimage"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:scaleType="fitCenter"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="200dp"
                 android:visibility="visible"
                 android:src="@drawable/visiting_card" />
         </androidx.cardview.widget.CardView>

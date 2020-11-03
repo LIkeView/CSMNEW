@@ -5,24 +5,17 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/change_pass"
+            android:title="Change PassWord" />
+        <item
             android:id="@+id/nav_add_rupees"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Add Arch Rupee" />
-        <item
-            android:id="@+id/nav_wallet_to_bank"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Wallet to Bank Account" />
-        <item
-            android:id="@+id/nav_passbook"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Pass Book" />
+            android:title="About" />
     </group>
-    <item
-        android:id="@+id/nav_add_event"
-        android:icon="@drawable/ic_menu_camera"
-        android:title="Add Event" />
 
+<group>
     <item
         android:id="@+id/nav_logout"
         android:title="Log Out" />
+</group>
+
 </menu>

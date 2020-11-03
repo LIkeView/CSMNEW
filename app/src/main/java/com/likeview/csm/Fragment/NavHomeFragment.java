@@ -126,22 +126,22 @@ public class NavHomeFragment extends Fragment implements NavigationView.OnNaviga
                 /*FragmentManager fragmentManager = getActivity().getFragmentManager(); // For AppCompat use getSupportFragmentManager
                 fragmentManager.beginTransaction().replace( R.id.fragment_container ,new AddArchRupeeFragment()).commit();*/
                 break;
-            case R.id.nav_wallet_to_bank:
-                Toast.makeText( getActivity(), "Wallet to bank", Toast.LENGTH_LONG ).show();
-//                Intent intent1 = new Intent( getActivity(), WalletToBankAcountActivity.class );
-//                startActivity( intent1 );
-                break;
+//            case R.id.nav_wallet_to_bank:
+//                Toast.makeText( getActivity(), "Wallet to bank", Toast.LENGTH_LONG ).show();
+////                Intent intent1 = new Intent( getActivity(), WalletToBankAcountActivity.class );
+////                startActivity( intent1 );
+//                break;
 
-            case R.id.nav_passbook:
-                Toast.makeText( getActivity(), "Passbook", Toast.LENGTH_LONG ).show();
-//                Intent intent2 = new Intent( getActivity(), PassbookActivity.class );
-//                startActivity( intent2 );
-                break;
-            case R.id.nav_add_event:
-                Toast.makeText( getActivity(), "Add Event", Toast.LENGTH_LONG ).show();
-//                Intent intent3 = new Intent( getActivity(), AddEventsActivity.class );
-//                startActivity( intent3 );
-                break;
+//            case R.id.nav_passbook:
+//                Toast.makeText( getActivity(), "Passbook", Toast.LENGTH_LONG ).show();
+////                Intent intent2 = new Intent( getActivity(), PassbookActivity.class );
+////                startActivity( intent2 );
+//                break;
+//            case R.id.nav_add_event:
+//                Toast.makeText( getActivity(), "Add Event", Toast.LENGTH_LONG ).show();
+////                Intent intent3 = new Intent( getActivity(), AddEventsActivity.class );
+////                startActivity( intent3 );
+//                break;
             case R.id.nav_logout:
                 Toast.makeText( getActivity(), "Log Out", Toast.LENGTH_LONG ).show();
                 SharedPrefManager sfm = SharedPrefManager.getInstance(context);

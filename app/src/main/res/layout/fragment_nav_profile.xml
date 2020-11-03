@@ -25,7 +25,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="0dp"
                 android:layout_marginRight="0dp"
-                android:background="@drawable/gradientbackground"
+                android:background="@color/colorPrimary"
                 android:orientation="vertical">
 
                 <TextView
@@ -80,7 +80,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Photos"
+                            android:text="Client"
                             android:textSize="20sp"
                             />
                         <TextView
@@ -102,13 +102,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Followers"
+                            android:text="Location"
                             android:textSize="20sp"
                             />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1205"
+                            android:text="Morbi"
                             android:textStyle="bold"
                             android:textSize="20sp"
                             android:paddingTop="10dp"
@@ -124,13 +124,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Following"
+                            android:text="Packeg"
                             android:textSize="20sp"
                             />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="360"
+                            android:text="Free"
                             android:textStyle="bold"
                             android:textSize="20sp"
                             android:paddingTop="10dp"
